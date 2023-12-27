@@ -2,9 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider = "postgresql"
+  url = env("DATABASE_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 generator client {
@@ -12,148 +12,7 @@ generator client {
 }
 
 // Project models
-model Project {
-    projectId   Int       @id @default(autoincrement()) @map("project_id")
-    name        String    @db.VarChar(255)
-    createdAt   DateTime  @default(now()) @map("created_at")
-    updatedAt   DateTime? @updatedAt @map("updated_at")
-    deletedAt   DateTime? @map("deleted_at")
-    blueprint   String
-    description String    @db.VarChar(1250)
-    location    String?   @db.VarChar(1250)
-    isActive    Boolean   @default(true) @map("is_active")
-    lots        Lot[]
-    images      Image[]
-}
 
-model Image {
-    imageId     Int     @id @default(autoincrement()) @map("image_id")
-    projectId   Int
-    name        String
-    description String?
-    resource    String
-    project     Project @relation(fields: [projectId], references: [projectId], onDelete: Cascade)
-
-    @@index([projectId], name: "idx_Image_projectId")
-}
-
-model Lot {
-    lotId        Int       @id @default(autoincrement()) @map("lot_id")
-    identifier   String    @unique
-    price        Decimal
-    downPayment  Decimal   @map("down_payment")
-    measures String?
-    totalArea    Decimal?
-    location     String?
-    availability Boolean   @default(true)
-    image        String?
-    projectId    Int       @map("project_id")
-    createdAt    DateTime  @default(now()) @map("created_at")
-    updatedAt    DateTime? @updatedAt @map("updated_at")
-    deletedAt    DateTime? @map("deleted_at")
-    isActive     Boolean   @default(true) @map("is_active")
-
-    estateNumber Int    @default(0) @map("estate_number")
-    folioNumber  Int    @default(0) @map("folio_number")
-    bookNumber   Int    @default(0) @map("book_number")
-    department   String @default("") @map("department")
-    lotNumber    Int    @default(0) @map("lot_number")
-
-    reservations Reservation[]
-    project      Project       @relation(fields: [projectId], references: [projectId], onDelete: Cascade)
-
-    @@index([projectId], name: "idx_lot_project_id")
-}
-
-model Reservation {
-    id     Int    @id @default(autoincrement())
-    userId String
-
-    startDate           DateTime
-    endDate             DateTime
-    birthdate           DateTime
-    firstname           String    @map("first_name") @db.VarChar(200)
-    secondname          String    @map("second_name") @db.VarChar(200)
-    extraname           String?   @map("extra_name") @db.VarChar(200)
-    lastname            String    @map("last_name") @db.VarChar(200)
-    secondlastname      String    @map("second_last_name") @db.VarChar(200)
-    surname             String?   @db.VarChar(200)
-    age                 Int
-    profession          String    @db.VarChar(200)
-    address             String    @db.VarChar(500)
-    dpi                 String    @db.VarChar(13)
-    citizenship         String    @db.VarChar(200)
-    nit                 String    @db.VarChar(20)
-    email               String    @db.VarChar(100)
-    phone               String    @db.VarChar(10)
-    workaddress         String    @map("work_address") @db.VarChar(200)
-    workphone           String    @map("work_phone") @db.VarChar(10)
-    price               Decimal
-    downpaymentPrice    Decimal   @map("downpayment_price")
-    downpaymentNumber   Int?      @map("downpayment_number")
-    downPaymentQuota    Decimal?  @map("downpayment_quota")
-    downpaymentComments String?   @map("downpayment_comments") @db.VarChar(1000)
-    reservationPrice    Decimal   @map("reservation_amount")
-    reservationNumber   Int?      @map("reservation_number")
-    reservationQuota    Decimal?  @map("reservation_quota")
-    reservationComments String?   @map("reservation_comments") @db.VarChar(1000)
-    interest            Decimal
-    payday              Int       @map("pay_day")
-    comments            String?   @db.VarChar(1000)
-    createdAt           DateTime  @default(now()) @map("created_at")
-    updatedAt           DateTime? @updatedAt @map("updated_at")
-    deletedAt           DateTime? @map("deleted_at")
-    status              Int       @default(1) // 1 == reserved, 2 == selled, 3 == canceled
-    frontDpiUrl         String?   @map("front_dpi_url")
-    backDpiUrl          String?   @map("back_dpi_url")
-    signatureUrl        String?   @map("signature_url")
-
-    capital   Decimal @map("capital")
-    totalPaid Decimal @map("total_paid")
-
-    lotId Int  @map("lot_id")
-    lot   Lot  @relation(fields: [lotId], references: [lotId], onDelete: Cascade)
-    user  User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    payments payment[]
-
-    @@index([lotId], name: "idx_reservation_lot_id")
-    @@index([userId], name: "idx_reservation_user_id")
-}
-
-model Event {
-    id     Int      @id @default(autoincrement())
-    title  String
-    start  DateTime
-    end    DateTime
-    allDay Boolean
-    desc   String
-    User   User?    @relation(fields: [userId], references: [id])
-    userId String?
-
-    @@index([userId])
-}
-
-model payment {
-    paymentId     Int       @id @default(autoincrement()) @map("payment_id")
-    clientName    String
-    Dpi           String
-    PaymentAmount String    @map("payment_amount")
-    createdAt     DateTime  @default(now()) @map("created_at")
-    updatedAt     DateTime? @updatedAt @map("updated_at")
-    deletedAt     DateTime? @map("deleted_at")
-    isActive      Boolean   @default(true) @map("is_active")
-    type          String    @default("C") @db.VarChar(1)
-    //C == CAPITAL
-    //A == ABONO
-    //R == RESERVA
-    //E == ENGANCHE
-
-    reservationId Int         @map("reservation_id")
-    reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
-
-    @@index([reservationId], name: "idx_payment_reservation__id")
-}
 
 // Necessary for Next auth
 model Account {
@@ -194,8 +53,6 @@ model User {
     role          String?       @default("disabled")
     accounts      Account[]
     sessions      Session[]
-    reservations  Reservation[]
-    event         Event[]
     createdAt   DateTime  @default(now()) @map("created_at")
 }
 
