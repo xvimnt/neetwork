@@ -1,0 +1,817 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-gradient {
+    @apply bg-gradient-to-r from-primary-600 via-secondary-600
+    to-secondary-700;
+  }
+
+  .button {
+    @apply flex items-center justify-center gap-x-2 rounded-xl border bg-primary-600 px-5 py-2 text-sm font-semibold capitalize text-white transition-colors duration-200 hover:bg-secondary-700;
+  }
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.react-datepicker__day.react-datepicker__day--keyboard-selected {
+  border: none;
+  border-radius: 7px;
+  background-color: var(--dark);
+  color: var(--white);
+}
+
+.react-datepicker__day.react-datepicker__day--keyboard-selected:hover {
+  border: none;
+  border-radius: 7px;
+  background-color: var(--dark);
+  color: var(--white);
+}
+
+.react-datepicker-popper .react-datepicker__navigation {
+  padding-top: 12px;
+  color: #000;
+}
+
+.react-datepicker {
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.189);
+  border: none !important;
+}
+
+.react-datepicker__header {
+  border-bottom: solid 5px var(--light) !important;
+  background: white !important;
+}
+
+.react-datepicker__current-month {
+  color: var(--dark) !important;
+}
+
+.react-datepicker__day.react-datepicker__day--today {
+  border-radius: 7px;
+  border: solid 2px var(--brand) !important;
+  background-color: var(--white) !important;
+  color: var(--dark) !important;
+  width: 30px;
+  height: 30px;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__day.react-datepicker__day--selected {
+  border: none;
+  border-radius: 7px;
+  background-color: black;
+  color: var(--white);
+}
+.react-datepicker__input-container > input {
+  width: 100%;
+  height: 4rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: var(--fsize);
+  padding-left: 1.4rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  background: none;
+  font-family: inherit;
+  color: var(--greyDark);
+}
+.react-datepicker__input-container > input::placeholder {
+  color: var(--greyLight-3);
+}
+.react-datepicker__input-container > input:focus {
+  outline: none;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+}
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--in-selecting-range:hover,
+.react-datepicker__day--in-range:hover,
+.react-datepicker__month-text--selected:hover,
+.react-datepicker__month-text--in-selecting-range:hover,
+.react-datepicker__month-text--in-range:hover,
+.react-datepicker__quarter-text--selected:hover,
+.react-datepicker__quarter-text--in-selecting-range:hover,
+.react-datepicker__quarter-text--in-range:hover,
+.react-datepicker__year-text--selected:hover,
+.react-datepicker__year-text--in-selecting-range:hover,
+.react-datepicker__year-text--in-range:hover {
+  border: none;
+  border-radius: 7px !important;
+  background-color: var(--brand) !important;
+  color: var(--dark) !important;
+}
+
+:root {
+  --primary-light: theme("colors.accent.500");
+  --primary: theme("colors.primary.500");
+  --primary-dark: theme("colors.primary.800");
+  --white: theme("colors.primary.100");
+  --greyLight-1: #b9bfc7;
+  --greyLight-2: #a6aec1;
+  --greyLight-3: #969eb4;
+  --greyDark: #9baacf;
+  --fsize: 1.2rem;
+}
+
+/* form */
+.form {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    0.8rem 0.8rem 1.4rem var(--greyLight-2),
+    -0.2rem -0.2rem 1.8rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+.form--pressed {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+/* text */
+.text {
+  color: var(--primary-dark);
+  font-size: var(--fsize);
+  font-family: inherit;
+}
+
+/* ui-modal */
+.ui-modal__header {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.32);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4.3px);
+  -webkit-backdrop-filter: blur(4.3px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #000;
+}
+/* form-input */
+.form-input {
+  grid-column: 0.75;
+  grid-row: 0.6666666667;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.form-input__input {
+  width: 100%;
+  height: 4rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: var(--fsize);
+  padding-left: 3.8rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  background: none;
+  font-family: inherit;
+  color: var(--primary-dark);
+}
+.form-input__input::placeholder {
+  color: var(--greyLight-3);
+}
+.form-input__input:focus {
+  outline: none;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+}
+.form-input__input:focus + .form-input__icon {
+  color: var(--primary);
+}
+.form-input__icon {
+  height: 2rem;
+  position: absolute;
+  font-size: var(--fsize);
+  padding: 0 1rem;
+  display: flex;
+  color: var(--greyDark);
+  transition: 0.3s ease;
+}
+
+/* form-select */
+.form-select {
+  grid-column: 0.75;
+  grid-row: 0.6666666667;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.form-select__select {
+  width: 100%;
+  height: 4rem;
+  border: none;
+  padding-left: 3.8rem;
+  border-radius: 1rem;
+  font-size: var(--fsize);
+  font-family: inherit;
+  color: var(--primary);
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  background: none;
+  /** for the dropdown indicator */
+  appearance: none;
+}
+.form-select__select::placeholder {
+  color: var(--greyLight-3);
+}
+.form-select__select:focus {
+  outline: none;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+}
+.form-select__select:focus + .form-select__icon {
+  color: var(--primary);
+}
+.form-select__icon {
+  height: 2rem;
+  position: absolute;
+  font-size: var(--fsize);
+  padding: 0 1rem;
+  display: flex;
+  color: var(--greyDark);
+  transition: 0.3s ease;
+}
+
+/* ui-btn */
+.ui-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.ui-btn > p {
+  font-size: var(--fsize);
+}
+.ui-btn__primary {
+  grid-column: 0.5;
+  grid-row: 0.8;
+  background: var(--primary);
+  box-shadow:
+    inset 0.2rem 0.2rem 1rem var(--primary-light),
+    inset -0.2rem -0.2rem 1rem var(--primary-dark),
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  color: white;
+}
+.ui-btn__primary:hover {
+  color: var(--primary-light);
+}
+.ui-btn__primary:active {
+  box-shadow:
+    inset 0.2rem 0.2rem 1rem var(--primary-dark),
+    inset -0.2rem -0.2rem 1rem var(--primary-light);
+}
+.ui-btn__secondary {
+  grid-column: 0.5;
+  grid-row: 0.8333333333;
+  color: var(--greyDark);
+}
+.ui-btn__secondary:hover {
+  color: var(--primary);
+}
+.ui-btn__secondary:active {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+}
+
+/*  form-switch  */
+.form-switch {
+  grid-column: 0.5;
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  grid-gap: 3rem;
+  justify-self: center;
+}
+.form-switch input {
+  display: none;
+}
+.form-switch__switch {
+  width: 6rem;
+}
+.form-switch__switch label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  background: rgba(255, 255, 255, 0);
+  position: relative;
+  cursor: pointer;
+  border-radius: 1.6rem;
+}
+.form-switch__switch label::after {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--greyDark);
+  transition: all 0.4s ease;
+}
+.form-switch__switch label::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    330deg,
+    var(--primary-dark) 0%,
+    var(--primary) 50%,
+    var(--primary-light) 100%
+  );
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+.form-switch input:checked ~ label::before {
+  opacity: 1;
+}
+.form-switch input:checked ~ label::after {
+  left: 57%;
+  background: var(--greyLight-1);
+}
+
+/* form-textarea */
+.form-textarea {
+  grid-column: 0.75;
+  grid-row: 0.75;
+}
+.form-textarea__textarea {
+  width: 100%;
+  height: 8rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: var(--fsize);
+  padding-left: 1.4rem;
+  padding-top: 0.5rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  background: none;
+  font-family: inherit;
+  color: var(--primary);
+}
+.form-textarea__textarea::placeholder {
+  color: var(--greyLight-3);
+}
+.form-textarea__textarea:focus {
+  outline: none;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+}
+
+/* ui-button-dropdown */
+.ui-button-dropdown {
+  grid-column: 0.75;
+  grid-row: 0.8;
+  display: flex;
+  justify-content: space-between;
+}
+.ui-button-dropdown__button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fsize);
+  cursor: pointer;
+  color: var(--greyDark);
+  transition: all 0.5s ease;
+}
+.ui-button-dropdown__button:active {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  color: var(--primary);
+}
+.ui-button-dropdown__button:hover > svg {
+  color: var(--primary);
+}
+
+.ui-button-dropdown__dropdown {
+  margin-top: 4rem;
+  position: absolute;
+  font-size: var(--fsize);
+  font-family: inherit;
+  color: var(--greyDark);
+  border-radius: 1.8rem;
+  background-color: white;
+  padding: 1.2rem;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  line-height: 2.4rem;
+}
+
+.ui-button-dropdown__dropdown__element {
+  color: var(--greyLight-2);
+}
+
+.ui-button-dropdown__dropdown__element:hover {
+  color: var(--greyLight-3);
+}
+
+/* ui-dropdown */
+.ui-dropdown__button {
+  width: fit-content;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  height: 4rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: var(--fsize);
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  background: none;
+  font-family: inherit;
+  color: var(--greyDark);
+  /** for the dropdown indicator */
+  appearance: none;
+}
+.ui-dropdown__button:active {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  color: var(--primary);
+}
+.ui-dropdown__button:hover {
+  color: var(--primary);
+}
+
+.ui-dropdown__dropdown {
+  margin-top: 1rem;
+  position: absolute;
+  font-size: var(--fsize);
+  font-family: inherit;
+  color: var(--greyDark);
+  background-color: white;
+  padding: 1.4rem;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  line-height: 2.4rem;
+}
+.ui-dropdown__dropdown__element:hover {
+  color: var(--primary);
+}
+
+/* ui-pagination */
+.ui-pagination {
+  grid-column: 0.75;
+  grid-row: 0.5;
+  width: fit-content;
+  height: 3rem;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.ui-pagination input {
+  display: none;
+}
+.ui-pagination > input:checked + label {
+  transition: all 0.5s ease;
+  color: var(--primary);
+}
+.ui-pagination__tab {
+  width: fit-content;
+  height: 2.2rem;
+  padding: 0.7rem;
+  font-size: var(--fsize);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--greyDark);
+  transition: all 0.5s ease;
+}
+.ui-pagination__tab:hover {
+  color: var(--primary);
+}
+.ui-pagination__checked {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  margin-left: 0.3rem;
+  border-radius: 0.8rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  pointer-events: none;
+}
+
+/* ui-tabs */
+.ui-tabs {
+  width: fit-content;
+  height: fit-content;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  border-radius: 1rem;
+  align-items: center;
+}
+.ui-tabs input {
+  display: none;
+}
+.ui-tabs > input:checked + label {
+  transition: all 0.5s ease;
+  color: var(--primary);
+}
+.ui-tabs__tab {
+  width: fit-content;
+  padding: 1rem;
+  height: 4.2rem;
+  font-size: var(--fsize);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--greyDark);
+  transition: all 0.5s ease;
+}
+.ui-tabs__tab:hover {
+  color: var(--primary);
+}
+.ui-tabs__checked {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  height: 4.2rem;
+  width: fit-content;
+  margin-left: 0.3rem;
+  border-radius: 0.8rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  pointer-events: none;
+}
+
+/* ui-steps */
+.ui-steps {
+  width: fit-content;
+  height: fit-content;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+}
+.ui-steps > input:checked + label {
+  transition: all 0.5s ease;
+  color: var(--primary);
+}
+.ui-steps__tab {
+  width: fit-content;
+  padding: 0.8rem;
+  height: 2.8rem;
+  font-size: var(--fsize);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--greyDark);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+.ui-steps__checked {
+  transform: translateX(0);
+  transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  height: 3.8rem;
+  width: fit-content;
+  margin-left: 0.3rem;
+  border-radius: 0.8rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+}
+
+/* ui-table */
+.ui-table {
+  padding: 1rem;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    0.8rem 0.8rem 1.4rem var(--greyLight-2),
+    -0.2rem -0.2rem 1.8rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.ui-table__row:hover {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  border-radius: 0.75rem;
+}
+
+/* ui-horizontal-card */
+.ui-horizontal-card {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    0.8rem 0.8rem 1.4rem var(--greyLight-2),
+    -0.2rem -0.2rem 1.8rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.ui-horizontal-card__body {
+  display: flex;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* ui-stacked-card */
+.ui-stacked-card {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    0.8rem 0.8rem 1.4rem var(--greyLight-2),
+    -0.2rem -0.2rem 1.8rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.ui-stacked-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  width: 100%;
+  border-radius: 3rem;
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+/* ui-card-prop */
+.ui-card-prop {
+  height: 4rem;
+}
+.ui-card-prop__button {
+  height: 2.4rem;
+  width: 2.4rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fsize);
+  cursor: pointer;
+  color: var(--greyDark);
+  transition: all 0.5s ease;
+}
+.ui-card-prop__button:hover {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+  color: var(--primary);
+}
+
+/* loader */
+.circle {
+  grid-column: 0.6666666667;
+  grid-row: 0.6666666667;
+  width: 100%;
+  height: 14rem;
+  justify-self: center;
+  border-radius: 1rem;
+  display: grid;
+  grid-template-rows: 1fr;
+  justify-items: center;
+  align-items: center;
+  position: relative;
+}
+.circle__btn {
+  grid-row: 0.5;
+  grid-column: 0.5;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  margin: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 3.2rem;
+  color: var(--primary);
+  z-index: 2;
+  background: var(--greyLight-1);
+  box-shadow:
+    0.3rem 0.3rem 0.6rem var(--greyLight-2),
+    -0.2rem -0.2rem 0.5rem var(--white);
+  cursor: pointer;
+  position: absolute;
+}
+.circle__btn.shadow {
+  box-shadow:
+    inset 0.2rem 0.2rem 0.5rem var(--greyLight-2),
+    inset -0.2rem -0.2rem 0.5rem var(--white);
+}
+.circle__back-1,
+.circle__back-2 {
+  grid-row: 0.5;
+  grid-column: 0.5;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 1;
+  position: absolute;
+}
+.circle__back-1 {
+  box-shadow:
+    0.4rem 0.4rem 0.8rem var(--greyLight-2),
+    -0.4rem -0.4rem 0.8rem var(--white);
+  background: linear-gradient(
+    to bottom right,
+    var(--greyLight-2) 0%,
+    var(--white) 100%
+  );
+  animation: waves 4s linear infinite;
+  transform: translateX(200);
+}
+.circle__back-2 {
+  box-shadow:
+    0.4rem 0.4rem 0.8rem var(--greyLight-2),
+    -0.4rem -0.4rem 0.8rem var(--white);
+  animation: waves 4s linear 2s infinite;
+  transform: translateX(200);
+}
+
+@keyframes waves {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
