@@ -1,9 +1,9 @@
 import React, { type ReactNode } from "react";
-// import { Sidebar } from "~/components/template/Sidebar";
-// import { Navbar } from "~/components/template/Navbar";
+import { Navbar } from "~/components/template/Navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { UIPage404 } from "../UI/UIPage404";
+import { UIPageForbidden } from "../UI/UIPageForbidden";
+import { Sidebar } from "../template/Sidebar";
 export const LayoutSigned = ({
   role = ["admin", "salesperson", "supervisor"],
   children,
@@ -20,20 +20,20 @@ export const LayoutSigned = ({
       router.push("/");
     },
   });
-  if (!session?.user) return <UIPage404 />;
+  if (!session?.user) return <UIPageForbidden />;
 
   // Verify roles or roles
   if (role) {
     if (Array.isArray(role)) {
-      if (!role.includes(session.user.role)) return <UIPage404 />;
+      if (!role.includes(session.user.role)) return <UIPageForbidden />;
     } else {
-      if (role !== session.user.role) return <UIPage404 />;
+      if (role !== session.user.role) return <UIPageForbidden />;
     }
   }
   return (
     <>
-      {/* <Navbar user={session.user} />
-      <Sidebar /> */}
+      <Navbar user={session.user} />
+      <Sidebar />
       <div className="w-full pt-2 md:pl-12 md:pt-20">
         <div
           className={`${
