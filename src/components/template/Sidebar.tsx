@@ -19,12 +19,11 @@ const menuItems = [
     icon: <HouseIcon className="h-5 w-5 text-white" />,
     link: "/dashboard",
   },
-  // {
-  //   name: "Datos",
-  //   icon: <DashboardIcon />,
-  //   link: "/add",
-  //   permissions: ["admin"],
-  // },
+  {
+    name: "Mis Cursos",
+    icon: <DashboardIcon />,
+    link: "/courses",
+  },
   // {
   //   name: "Proyectos",
   //   icon: <GalleryIcon />,

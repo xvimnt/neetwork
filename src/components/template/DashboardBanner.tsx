@@ -33,7 +33,7 @@ export const DashboardBanner = ({
           className="mx-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
           onClick={handlePrev}
         />
-        <div className="relative h-[162px] w-[272px]">
+        <div className="relative h-[162px] w-[272px] cursor-pointer transition duration-500  hover:scale-110">
           <Image src={imageUrl} alt="course" fill objectFit="cover" />
         </div>
         <div className="ml-6 flex h-[162px] flex-col">
