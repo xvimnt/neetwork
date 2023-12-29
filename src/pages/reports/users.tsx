@@ -3,7 +3,7 @@ import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { type RouterOutputs, api } from "~/utils/api";
 import { UILoadingPage } from "~/components/UI/UILoader";
-import { type InferGetStaticPropsType } from "next";
+import { type InferGetStaticPropsI } from "next";
 import UIModal from "~/components/UI/UIModal";
 import {
   CancelIcon,
@@ -117,7 +117,7 @@ const getRows = (
   return rows;
 };
 
-type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
+type PageProps = InferGetStaticPropsI<typeof getStaticProps>;
 export default function Users(_props: PageProps) {
   // State for the page
   const [showModal, setShowModal] = React.useState(false);

@@ -111,10 +111,25 @@ export const BannerArrowIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
     >
       <path
         d="M12.5 30L27.5 15M12.5 30L27.5 45M12.5 30H47.5"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
+    </svg>
+  );
+};
+
+export const CircleIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="31"
+      height="31"
+      viewBox="0 0 31 31"
+      fill="currentColor"
+      {...other}
+    >
+      <circle cx="15.5" cy="15.5" r="15.5" />
     </svg>
   );
 };

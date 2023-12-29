@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { BannerArrowIcon } from "../UI/Icons";
 
-interface PropsType {
+interface PropsI {
   imageUrl: string;
   timeAgo: string;
   title: string;
@@ -22,7 +22,7 @@ export const DashboardBanner = ({
   authorTitle,
   handleNext,
   handlePrev,
-}: PropsType) => {
+}: PropsI) => {
   return (
     <div className="relative">
       <div className="flex h-[239px] w-full shrink-0 items-center bg-cover px-[-120px] blur-[7.5px] brightness-50 saturate-200">
@@ -33,7 +33,9 @@ export const DashboardBanner = ({
           className="mx-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
           onClick={handlePrev}
         />
-        <Image src={imageUrl} alt="course" width={272} height={162} />
+        <div className="relative h-[162px] w-[272px]">
+          <Image src={imageUrl} alt="course" fill objectFit="cover" />
+        </div>
         <div className="ml-6 flex h-[162px] flex-col">
           <div className="flex flex-row">
             <div className="w-[52px] shrink-0 rounded-[50px] bg-green-500 text-center text-[10px] font-bold not-italic leading-[normal] text-white">
@@ -47,14 +49,16 @@ export const DashboardBanner = ({
             {title}
           </div>
           <div className="mt-14 flex flex-row">
-            <Image
-              src={authorImageUrl}
-              alt="teacher"
-              width={45}
-              height={45}
-              className="shrink-0 rounded-[45px]"
-            />
-            <div className="ml-2 flex flex-col">
+            <div className="relative h-[40px] w-[40px] rounded-full">
+              <Image
+                src={authorImageUrl}
+                alt="teacher"
+                fill
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+            <div className="ml-2 flex flex-col items-start justify-center">
               <p className="text-center text-[15px] font-bold not-italic leading-[normal] text-white">
                 {authorName}
               </p>
