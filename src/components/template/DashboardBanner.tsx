@@ -25,7 +25,7 @@ export const DashboardBanner = ({
 }: PropsI) => {
   return (
     <div className="relative">
-      <div className="flex h-[239px] w-full shrink-0 items-center bg-cover px-[-120px] blur-[7.5px] brightness-50 saturate-200">
+      <div className="flex h-[250px] w-full shrink-0 items-center bg-cover px-[-120px] blur-[7.5px] brightness-50 saturate-200">
         <Image src={imageUrl} alt="course" fill objectFit="cover" />
       </div>
       <div className="absolute left-10 top-10 flex w-full flex-row items-center">

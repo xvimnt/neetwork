@@ -11,7 +11,7 @@ export const SavedCoursesTab = ({ tab, active, handleClick }: PropsI) => {
     <div className="flex w-fit flex-col">
       <button
         onClick={handleClick}
-        className="cursor-pointer text-[27px] font-bold not-italic leading-[normal] text-[#292929] hover:text-[#788334]"
+        className="cursor-pointer text-[20px] font-bold not-italic leading-[normal] text-[#292929] hover:text-[#788334]"
       >
         {tab}
       </button>

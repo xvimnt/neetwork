@@ -49,7 +49,7 @@ export default function Dashboard() {
   return (
     <LayoutSigned>
       <DashboardCarrousel items={items} />
-      <div className="mx-[120px] mt-[100px] flex flex-col gap-8">
+      <div className="mt-[80px] flex flex-col items-center gap-8">
         <CourseCarrousel items={items} title="Te podria interesar:" />
         <CourseCarrousel items={items} title="Los mas baratos:" />
       </div>

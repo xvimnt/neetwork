@@ -14,7 +14,7 @@ interface PropsI {
 export const SavedCoursesTabs = ({ tabs }: PropsI) => {
   return (
     <div>
-      <div className="flex flex-row gap-16">
+      <div className="relative flex flex-row gap-16">
         {tabs.map((tab, index) => (
           <SavedCoursesTab
             key={index}
@@ -24,7 +24,7 @@ export const SavedCoursesTabs = ({ tabs }: PropsI) => {
           />
         ))}
       </div>
-      <div className="fixed  left-0 right-0 h-[1px] bg-gray-400"></div>
+      <div className="absolute left-0 right-0 h-[1px] bg-gray-400"></div>
     </div>
   );
 };
