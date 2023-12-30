@@ -134,6 +134,37 @@ export const HamburguerCourseIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   );
 };
 
+export const ExplorerArrowIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...other}
+    >
+      <path d="M3 5H21C21.1822 5.00057 21.3609 5.05084 21.5167 5.14538C21.6725 5.23992 21.7995 5.37517 21.8842 5.53655C21.9689 5.69794 22.0079 5.87936 21.9971 6.06129C21.9863 6.24321 21.9261 6.41875 21.823 6.569L12.823 19.569C12.45 20.108 11.552 20.108 11.178 19.569L2.178 6.569C2.07383 6.41906 2.01274 6.24343 2.00137 6.06121C1.99 5.87898 2.02879 5.69712 2.11352 5.53539C2.19825 5.37367 2.32568 5.23825 2.48197 5.14386C2.63825 5.04947 2.81742 4.99971 3 5Z" />
+    </svg>
+  );
+};
+
+export const GraduationIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...other}
+    >
+      <path d="M2 7V8L13 12L22 8V7L11 4L2 7Z" fill="#383838" />
+      <path d="M4 11V15.267C4 16.888 8.001 19.16 13 19.001C17 18.875 19.586 17.029 20 15.534C20.024 15.445 20.037 15.356 20.037 15.266V11L13 14L8 12.333V15.546L7 15.182V12L4 11Z" />
+    </svg>
+  );
+};
+
 export const CircleIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
