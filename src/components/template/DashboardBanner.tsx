@@ -28,12 +28,12 @@ export const DashboardBanner = ({
 }: PropsI) => {
   return (
     <div className="relative">
-      <div className="flex h-[250px] w-full shrink-0 items-center bg-cover px-[-120px] blur-[7.5px] brightness-50 saturate-200">
+      <div className="-ml-[40px] flex h-[250px] w-[100vw] shrink-0 items-center bg-cover blur-[7.5px] brightness-50 saturate-200">
         <Image src={imageUrl} alt="course" fill objectFit="cover" />
       </div>
-      <div className="absolute left-10 top-10 flex w-full flex-row items-center">
+      <div className="absolute left-0 top-10 flex w-full flex-row items-center">
         <BannerArrowIcon
-          className="mx-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
+          className="mr-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
           onClick={handlePrev}
         />
         <Link
@@ -75,7 +75,7 @@ export const DashboardBanner = ({
           </div>
         </div>
         <BannerArrowIcon
-          className="absolute right-10 h-12 w-12 rotate-180 cursor-pointer stroke-white hover:stroke-primary-500"
+          className="absolute right-0 h-12 w-12 rotate-180 cursor-pointer stroke-white hover:stroke-primary-500"
           onClick={handleNext}
         />
       </div>

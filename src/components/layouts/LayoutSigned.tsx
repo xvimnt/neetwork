@@ -35,18 +35,16 @@ export const LayoutSigned = ({
     <>
       <Navbar user={session.user} />
       <Sidebar />
-      <div className="min-h-[92vh] w-full pt-2 md:pt-16">
+      <div className="w-full pt-2 md:pt-20">
         <div
           className={`${
-            noPadding
-              ? ""
-              : "mx-auto w-full px-[20px] md:px-[60px] 2xl:px-[120px]"
-          }`}
+            noPadding ? "" : "mx-auto w-full pl-[90px] pr-[40px]"
+          } min-h-[90vh]`}
         >
           {children}
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 };

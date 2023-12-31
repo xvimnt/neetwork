@@ -4,6 +4,7 @@ import { DashboardCarrousel } from "~/components/template/DashboardCarrousel";
 
 const items = [
   {
+    id: "1",
     authorName: "Ericka Godinez",
     authorTitle: "Software Developer",
     authorImageUrl:
@@ -14,6 +15,7 @@ const items = [
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y291cnNlfGVufDB8fDB8fHww",
   },
   {
+    id: "2",
     authorName: "Juan Bautista",
     authorTitle: "Software Developer",
     authorImageUrl:
@@ -24,6 +26,7 @@ const items = [
       "https://images.unsplash.com/photo-1559136656-3db4bf6c35f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGNvdXJzZXxlbnwwfHwwfHx8MA%3D%3D",
   },
   {
+    id: "3",
     authorName: "Alejandro Romano",
     authorTitle: "Software Developer",
     authorImageUrl:
@@ -34,6 +37,7 @@ const items = [
       "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGNvdXJzZXxlbnwwfHwwfHx8MA%3D%3D",
   },
   {
+    id: "4",
     authorName: "Javier Monterroso",
     authorTitle: "Software Developer",
     authorImageUrl:

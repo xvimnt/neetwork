@@ -2,6 +2,7 @@ import React from "react";
 import { DashboardBanner } from "./DashboardBanner";
 
 interface ItemI {
+  id: string;
   authorName: string;
   authorTitle: string;
   authorImageUrl: string;

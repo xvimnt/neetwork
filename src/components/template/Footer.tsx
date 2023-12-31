@@ -14,7 +14,7 @@ export const Footer = () => {
           Copyright 2023
         </p>
       </div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row items-end justify-center gap-2">
         <InstagramIcon className="h-[32px] w-[32px] fill-[#000000]" />
         <FacebookIcon className="h-[32px] w-[32px] fill-[#000000]" />
         <EmailFooterIcon className="h-[32px] w-[32px] fill-[#000000]" />

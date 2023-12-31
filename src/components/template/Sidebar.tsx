@@ -150,7 +150,7 @@ export const Sidebar = () => {
       <aside className="fixed z-50 hidden h-screen w-60 -translate-x-48 transform bg-[#68E1FD] transition duration-1000 ease-in-out md:flex">
         <button
           onClick={openNav}
-          className="absolute -right-0 top-4 flex w-full transform items-center justify-between bg-[#C7E21C] p-4 pl-8 text-black transition duration-500 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
+          className="absolute right-0 top-4 flex w-full transform items-center justify-between bg-[#C7E21C] p-4 pl-4 text-black transition duration-500 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
         >
           Neetwork
           <MenuIcon className="h-6 w-6" />
@@ -165,7 +165,7 @@ export const Sidebar = () => {
               <Link
                 key={index}
                 href={item.link}
-                className="flex w-full transform flex-row items-center space-x-3  p-2 pl-8 text-black duration-300 ease-in-out  hover:bg-black hover:text-[#C7E21C]"
+                className="flex w-full transform flex-row items-center space-x-3  p-2 pl-4 text-black duration-300 ease-in-out  hover:bg-black hover:text-[#C7E21C]"
               >
                 {item.icon}
                 <div>{item.name}</div>

@@ -3,6 +3,7 @@ import { CourseCard } from "./CourseCard";
 import { BannerArrowIcon, CircleIcon } from "../UI/Icons";
 
 interface CourseI {
+  id: string;
   imageUrl: string;
   title: string;
   authorName: string;
@@ -29,9 +30,10 @@ export const CourseCarrousel = ({ items, title }: PropsI) => {
           <BannerArrowIcon className="absolute left-0 top-0 rotate-180 hover:stroke-primary-500" />
         </div>
       </div>
-      <div className="flex w-full shrink-0 flex-row gap-2">
+      <div className="flex w-full flex-row gap-2 ">
         {items.map((item) => (
           <CourseCard
+            id={item.id}
             key={item.title}
             imageUrl={item.imageUrl}
             title={item.title}

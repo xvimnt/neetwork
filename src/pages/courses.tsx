@@ -4,6 +4,7 @@ import { CourseCardLarge } from "~/components/template/CourseCardLarge";
 import { SavedCoursesTabs } from "~/components/template/SavedCoursesTabs";
 
 const course = {
+  id: "1",
   title: "Curso de React.js",
   authorName: "Ericka Godinez",
   remainingTime: "5 horas 3 minutos",
@@ -35,7 +36,7 @@ export default function Courses() {
 
   return (
     <LayoutSigned>
-      <div className="flex flex-col gap-8 xl:mx-[120px]">
+      <div className="flex flex-col gap-8 py-10">
         <SavedCoursesTabs tabs={tabs} />
         <CourseCardLarge {...course} />
         <CourseCardLarge {...course} />

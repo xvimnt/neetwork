@@ -46,7 +46,7 @@ export default function Course({ courseId }: PageProps) {
   ];
   return (
     <LayoutSigned>
-      <div className="flex w-full flex-col gap-16 p-4">
+      <div className="flex w-full flex-col gap-16">
         {/* banner */}
         <div className="flex w-full flex-row">
           {/* image */}
