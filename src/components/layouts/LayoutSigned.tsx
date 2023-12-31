@@ -35,7 +35,7 @@ export const LayoutSigned = ({
     <>
       <Navbar user={session.user} />
       <Sidebar />
-      <div className="w-full pt-2 md:pt-20">
+      <div className="w-full pt-2 md:pt-16">
         <div
           className={`${
             noPadding ? "" : "mx-auto w-full pl-[90px] pr-[40px]"
