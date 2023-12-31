@@ -16,7 +16,7 @@ import { useSession } from "next-auth/react";
 const menuItems = [
   {
     name: "Inicio",
-    icon: <HouseIcon className="h-5 w-5 text-white" />,
+    icon: <HouseIcon className="h-5 w-5" />,
     link: "/dashboard",
   },
   {
@@ -147,21 +147,16 @@ export const Sidebar = () => {
           </div>
         </div>
       </nav>
-      <aside className="fixed z-50 hidden h-screen w-60 -translate-x-48 transform bg-primary-500 transition duration-1000 ease-in-out md:flex">
-        <div className="max-toolbar absolute -right-6 top-2 flex h-12 w-full translate-x-24 scale-x-0 transform items-center justify-between rounded-full border-4 border-white bg-primary-500  transition duration-300 ease-in dark:border-[#0F172A]">
-          <div className="group flex items-center space-x-3 rounded-full bg-gradient-to-r from-primary-500 via-secondary-500 to-secondary-500 py-1  pl-10 pr-2 text-white dark:from-primary-500 dark:to-secondary-500  ">
-            <Link href="/" className="mr-12 transform duration-300 ease-in-out">
-              Neetwork
-            </Link>
-          </div>
-        </div>
+      <aside className="fixed z-50 hidden h-screen w-60 -translate-x-48 transform bg-[#68E1FD] transition duration-1000 ease-in-out md:flex">
         <button
           onClick={openNav}
-          className="absolute -right-6 top-2 flex transform rounded-full border-4 border-white bg-primary-500 p-3 text-white transition duration-500 ease-in-out hover:rotate-45 hover:bg-secondary-500 dark:border-[#0F172A] dark:hover:bg-secondary-500"
+          className="absolute -right-0 top-4 flex w-full transform items-center justify-between bg-[#C7E21C] p-4 pl-8 text-black transition duration-500 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
         >
-          <MenuIcon />
+          Neetwork
+          <MenuIcon className="h-6 w-6" />
         </button>
         <div className="max mt-20 hidden h-screen w-full flex-col space-y-2 text-white">
+          {/* text and logo */}
           {menuItems.map((item, index) => {
             if (item.permissions && session?.user?.role) {
               if (!item.permissions.includes(session?.user?.role)) return null;
@@ -170,7 +165,7 @@ export const Sidebar = () => {
               <Link
                 key={index}
                 href={item.link}
-                className="flex w-full transform flex-row items-center space-x-3 rounded-full bg-primary-500 p-2 pl-8 text-white duration-300 ease-in-out hover:ml-4 hover:text-secondary-100 dark:hover:text-blue-500"
+                className="flex w-full transform flex-row items-center space-x-3  p-2 pl-8 text-black duration-300 ease-in-out  hover:bg-black hover:text-[#C7E21C]"
               >
                 {item.icon}
                 <div>{item.name}</div>
@@ -178,7 +173,8 @@ export const Sidebar = () => {
             );
           })}
         </div>
-        <div className="mini mt-20 flex h-full w-full flex-col space-y-2">
+        {/* only logos */}
+        <div className="mini mt-20 flex h-full w-full flex-col ">
           {menuItems.map((item, index) => {
             if (item.permissions && session?.user?.role) {
               if (!item.permissions.includes(session?.user?.role)) return null;
@@ -187,7 +183,7 @@ export const Sidebar = () => {
               <Link
                 key={index}
                 href={item.link}
-                className="flex w-full transform justify-end rounded-full bg-primary-500 p-3 pr-5 text-white duration-300 ease-in-out hover:ml-4 hover:text-secondary-100 dark:hover:text-blue-500"
+                className="flex w-full transform justify-end  p-4 text-black duration-300 ease-in-out hover:bg-black hover:text-[#C7E21C]"
               >
                 {item.icon}
               </Link>

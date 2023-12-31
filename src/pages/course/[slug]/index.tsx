@@ -8,6 +8,7 @@ import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import WhiteGradient from "~/assets/svg/white-gradient.svg";
 import { GraduationIcon } from "~/components/UI/Icons";
 import { ExplorerOutsideContainer } from "~/components/template/ExplorerOutsideContainer";
+import Link from "next/link";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ courseId }: PageProps) {
@@ -68,20 +69,23 @@ export default function Course({ courseId }: PageProps) {
               Curso de WooComerce
             </h1>
             {/* info */}
-            <h2 className="text-[17px] font-bold not-italic leading-[normal] text-[#383838]">
+            <h2 className="text-[15px] font-semibold not-italic leading-[normal] text-[#383838]">
               2h 20 min - Desde el 20 de Junio del 2023
             </h2>
             {/* number of students */}
             <div className="flex flex-row gap-2">
               <GraduationIcon className="fill-[#C7E21C]" />
-              <p className="leading-[normal]; text-[15px] font-bold not-italic text-[#383838]">
+              <p className="leading-[normal]; text-[13px] font-normal not-italic text-[#383838]">
                 20 Inscritos
               </p>
             </div>
             {/* cta */}
-            <button className=" h-10 w-[157px] shrink-0 rounded-[5px] bg-[#c7e21c] font-semibold hover:bg-[#becf4f]">
+            <Link
+              href={`${2}/play`}
+              className="flex h-10 w-[157px] shrink-0 items-center justify-center rounded-[5px] bg-[#c7e21c] font-semibold hover:bg-[#becf4f]"
+            >
               Empezar
-            </button>
+            </Link>
           </div>
         </div>
         {/* body */}
@@ -92,7 +96,7 @@ export default function Course({ courseId }: PageProps) {
               <h2 className="text-left text-[26px] font-bold not-italic leading-[normal] text-black">
                 Descripcion del curso
               </h2>
-              <article className="w-[601px] text-left text-[17px] font-bold not-italic leading-[normal] text-[#383838]">
+              <article className="w-[601px] text-left text-[17px] font-light not-italic leading-[normal] text-[#383838]">
                 Lorem ipsum dolor sit amet consectetur. Nunc justo ligula
                 eleifend lacus pulvinar amet dictum tempor malesuada. Odio netus
                 et ut at et sit libero pretium fames. Pellentesque facilisi
@@ -117,10 +121,10 @@ export default function Course({ courseId }: PageProps) {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-left text-[17px] font-bold not-italic leading-[normal] text-[#383838]">
+                  <p className="text-left text-[17px] font-normal not-italic leading-[normal] text-[#383838]">
                     Juan Posadas
                   </p>
-                  <p className="text-left text-sm font-bold not-italic leading-[normal] text-[#666]">
+                  <p className="text-left text-sm font-light not-italic leading-[normal] text-[#666]">
                     Ingeniero de software
                   </p>
                 </div>
@@ -131,20 +135,20 @@ export default function Course({ courseId }: PageProps) {
                 Habilidades Nuevas
               </h2>
               <div className="flex flex-row gap-2">
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-bold not-italic leading-[normal] text-[#525252]">
+                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
                   Emprendimiento
                 </div>
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-bold not-italic leading-[normal] text-[#525252]">
+                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
                   E-commerce
                 </div>
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-bold not-italic leading-[normal] text-[#525252]">
+                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
                   Ventas
                 </div>
               </div>
             </div>
           </div>
           {/* explorer */}
-          <div className="flex h-fit w-[333px] shrink-0 flex-col gap-4 border border-solid border-[#BABABA] p-4">
+          <div className="flex h-[525px] w-[333px] shrink-0 flex-col gap-4 overflow-y-scroll border border-solid border-[#BABABA] p-4">
             {sections.map((section) => (
               <ExplorerOutsideContainer
                 key={section}

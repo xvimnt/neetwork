@@ -2,8 +2,10 @@ import Image from "next/image";
 import React from "react";
 import Logo from "~/assets/img/logo.png";
 import { HamburguerCourseIcon } from "../UI/Icons";
+import Link from "next/link";
 
 interface PropsI {
+  id: string;
   title: string;
   authorName: string;
   remainingTime: string;
@@ -12,6 +14,7 @@ interface PropsI {
 }
 
 export const CourseCardLarge = ({
+  id,
   title,
   authorName,
   remainingTime,
@@ -21,7 +24,10 @@ export const CourseCardLarge = ({
   return (
     <div className="relative">
       <div className="relative flex flex-row gap-4">
-        <div className="relative h-[147px] w-[222px] shrink-0">
+        <Link
+          href={`course/${id}`}
+          className="relative h-[147px] w-[222px] shrink-0"
+        >
           <Image
             src={imageUrl}
             layout="fill"
@@ -29,7 +35,7 @@ export const CourseCardLarge = ({
             alt="Curso"
             className="cursor-pointer transition duration-500 hover:scale-105"
           />
-        </div>
+        </Link>
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-1">
             <h3 className="text-[20px] font-bold not-italic leading-[normal] text-black">

@@ -1,8 +1,10 @@
 import Image from "next/image";
 import React from "react";
 import { BannerArrowIcon } from "../UI/Icons";
+import Link from "next/link";
 
 interface PropsI {
+  id: string;
   imageUrl: string;
   timeAgo: string;
   title: string;
@@ -14,6 +16,7 @@ interface PropsI {
 }
 
 export const DashboardBanner = ({
+  id,
   imageUrl,
   timeAgo,
   title,
@@ -33,9 +36,12 @@ export const DashboardBanner = ({
           className="mx-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
           onClick={handlePrev}
         />
-        <div className="relative h-[162px] w-[272px] cursor-pointer transition duration-500  hover:scale-110">
+        <Link
+          href={`/course/${id}`}
+          className="relative h-[162px] w-[272px] cursor-pointer transition duration-500  hover:scale-110"
+        >
           <Image src={imageUrl} alt="course" fill objectFit="cover" />
-        </div>
+        </Link>
         <div className="ml-6 flex h-[162px] flex-col">
           <div className="flex flex-row">
             <div className="w-[52px] shrink-0 rounded-[50px] bg-green-500 text-center text-[10px] font-bold not-italic leading-[normal] text-white">

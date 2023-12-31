@@ -4,6 +4,7 @@ import { Navbar } from "~/components/template/Navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { UIPageForbidden } from "../UI/UIPageForbidden";
+import { Footer } from "../template/Footer";
 export const LayoutSigned = ({
   role = ["admin", "salesperson", "supervisor"],
   children,
@@ -34,17 +35,18 @@ export const LayoutSigned = ({
     <>
       <Navbar user={session.user} />
       <Sidebar />
-      <div className="w-full pt-2 md:pt-20">
+      <div className="min-h-[92vh] w-full pt-2 md:pt-16">
         <div
           className={`${
             noPadding
               ? ""
-              : "mx-auto w-full px-[20px] md:px-[60px]  2xl:px-[120px]"
+              : "mx-auto w-full px-[20px] md:px-[60px] 2xl:px-[120px]"
           }`}
         >
           {children}
         </div>
       </div>
+      <Footer />
     </>
   );
 };

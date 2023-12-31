@@ -43,11 +43,11 @@ export default function Course({ courseId }: PageProps) {
     "Configuracion",
   ];
   return (
-    <LayoutSigned>
-      <div className="flex flex-row">
-        <div className="flex flex-col gap-8">
+    <LayoutSigned noPadding>
+      <div className="mb-8 flex flex-row md:ml-[48px]">
+        <div className=" flex w-full flex-col gap-8">
           {/* video */}
-          <div className="relative  h-[468px] w-[944px] shrink-0">
+          <div className="relative h-[40vw] w-full shrink-0">
             <Image
               src="https://images.unsplash.com/photo-1503428593586-e225b39bddfe?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="curso"
@@ -56,7 +56,7 @@ export default function Course({ courseId }: PageProps) {
             />
           </div>
           {/* info */}
-          <div className="flex flex-col gap-4">
+          <div className="ml-[32px] flex flex-col  gap-4">
             {/* user */}
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2">
@@ -83,7 +83,7 @@ export default function Course({ courseId }: PageProps) {
             </div>
             {/* course description */}
             <div className="flex flex-col gap-2">
-              <article className="w-[601px] text-left text-[17px] font-bold not-italic leading-[normal] text-[#383838]">
+              <article className="w-full text-left text-[17px] font-light not-italic leading-[normal] text-[#383838]">
                 Lorem ipsum dolor sit amet consectetur. Nunc justo ligula
                 eleifend lacus pulvinar amet dictum tempor malesuada. Odio netus
                 et ut at et sit libero pretium fames. Pellentesque facilisi
@@ -93,7 +93,7 @@ export default function Course({ courseId }: PageProps) {
             </div>
           </div>
         </div>
-        <div className="flex h-[691px] w-[336px] shrink-0 flex-col ">
+        <div className="flex h-[70vh] w-[336px] shrink-0 flex-col ">
           {/* header */}
           <div className="flex h-[76px] w-[336px] shrink-0 flex-row items-center gap-4 bg-[#c7e21c] p-4">
             <div className="relative h-[31px] w-[31px]">
@@ -104,7 +104,7 @@ export default function Course({ courseId }: PageProps) {
             </h1>
           </div>
           {/* explorer */}
-          <div className="flex h-fit w-[336px] shrink-0 flex-col gap-4 border border-solid border-[#BABABA] p-4">
+          <div className="flex h-full w-[336px] shrink-0 flex-col gap-4 overflow-y-scroll border border-solid border-[#BABABA] p-4">
             {sections.map((section) => (
               <ExplorerInsideContainer
                 key={section}

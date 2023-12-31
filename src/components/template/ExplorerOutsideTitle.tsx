@@ -14,7 +14,7 @@ export const ExplorerOutsideTitle = ({
 }: PropsI) => {
   return (
     <div className="flex w-full flex-row justify-between">
-      <h3 className="text-[22px] font-bold not-italic leading-[normal] text-[#383838]">
+      <h3 className="text-[22px] font-normal not-italic leading-[normal] text-[#383838]">
         {title}
       </h3>
       <button onClick={handleClick}>
