@@ -10,56 +10,56 @@ import {
   MenuIcon,
   StatsIcon,
   UsersIcon,
+  VideoIcon,
 } from "../UI/Icons";
 import { useSession } from "next-auth/react";
-
-const menuItems = [
-  {
-    name: "Inicio",
-    icon: <HouseIcon className="h-5 w-5" />,
-    link: "/dashboard",
-  },
-  {
-    name: "Mis Cursos",
-    icon: <DashboardIcon />,
-    link: "/courses",
-  },
-  // {
-  //   name: "Proyectos",
-  //   icon: <GalleryIcon />,
-  //   link: "/projects",
-  // },
-  // {
-  //   name: "Calendario",
-  //   icon: <CalendarIcon />,
-  //   link: "/calendar",
-  // },
-  // {
-  //   name: "Reservaciones",
-  //   icon: <CategoryIcon />,
-  //   link: "/reports/reservations",
-  // },
-  {
-    name: "Usuarios",
-    icon: <UsersIcon className="h-5 w-5" />,
-    link: "/reports/users",
-    permissions: ["admin"],
-  },
-  // {
-  //   name: "Transacciones",
-  //   icon: <TransactionIcon />,
-  //   link: "/reports/transactions",
-  // },
-  {
-    name: "Salir",
-    icon: <LogoutIcon />,
-    link: "/api/auth/signout",
-  },
-];
 
 export const Sidebar = () => {
   const [open, setOpen] = React.useState(false);
   const { data: session } = useSession();
+  const menuItems = [
+    {
+      name: "Inicio",
+      icon: <HouseIcon className="h-5 w-5" />,
+      link: "/dashboard",
+    },
+    {
+      name: "Mis Cursos",
+      icon: <DashboardIcon />,
+      link: "/courses",
+    },
+    // {
+    //   name: "Proyectos",
+    //   icon: <GalleryIcon />,
+    //   link: "/projects",
+    // },
+    // {
+    //   name: "Calendario",
+    //   icon: <CalendarIcon />,
+    //   link: "/calendar",
+    // },
+    // {
+    //   name: "Reservaciones",
+    //   icon: <CategoryIcon />,
+    //   link: "/reports/reservations",
+    // },
+    {
+      name: "Usuarios",
+      icon: <UsersIcon className="h-5 w-5" />,
+      link: "/reports/users",
+      permissions: ["admin"],
+    },
+    {
+      name: "Mis Cursos",
+      icon: <VideoIcon className="h-5 w-5" />,
+      link: `/user/${session?.user?.id}}`,
+    },
+    {
+      name: "Salir",
+      icon: <LogoutIcon />,
+      link: "/api/auth/signout",
+    },
+  ];
 
   const sidebar = document.querySelector("aside");
   const maxSidebar = document.querySelector(".max");
@@ -165,7 +165,7 @@ export const Sidebar = () => {
               <Link
                 key={index}
                 href={item.link}
-                className="flex w-full transform flex-row items-center space-x-3  p-2 pl-4 text-black duration-300 ease-in-out  hover:bg-black hover:text-[#C7E21C]"
+                className="flex w-full transform flex-row items-center space-x-3  p-2 pl-4 text-black duration-300 ease-in-out  hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
               >
                 {item.icon}
                 <div>{item.name}</div>
@@ -183,7 +183,7 @@ export const Sidebar = () => {
               <Link
                 key={index}
                 href={item.link}
-                className="flex w-full transform justify-end  p-4 text-black duration-300 ease-in-out hover:bg-black hover:text-[#C7E21C]"
+                className="flex w-full transform justify-end  p-4 text-black duration-300 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
               >
                 {item.icon}
               </Link>
