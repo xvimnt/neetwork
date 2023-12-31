@@ -7,6 +7,7 @@ import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import Logo from "~/assets/img/logo.png";
 import { ExplorerInsideContainer } from "~/components/template/ExplorerInsideContainer";
+import WhiteGradient from "~/assets/svg/white-gradient.svg";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ courseId }: PageProps) {
@@ -44,9 +45,18 @@ export default function Course({ courseId }: PageProps) {
   ];
   return (
     <LayoutSigned noPadding>
-      <div className="mb-8 flex flex-row md:ml-[48px]">
-        <div className=" flex w-full flex-col gap-8">
-          {/* video */}
+      <div className="flex flex-row md:ml-[48px]">
+        <div className="relative flex w-full flex-col gap-8">
+          {/* video title */}
+          <div className="absolute left-0 top-0 z-10 h-[90px] w-full shrink-0 bg-gradient-to-b from-black via-black py-4 pl-[40px]">
+            <h1 className="text-base font-bold not-italic leading-[normal] text-white">
+              Curso de Woocomerce
+            </h1>
+            <h3 className="text-[11px] font-bold not-italic leading-[normal] text-[color:var(--primary-gray-light,#9F9F9F)]">
+              Fundamentos
+            </h3>
+          </div>
+          {/* video body */}
           <div className="relative h-[40vw] w-full shrink-0">
             <Image
               src="https://images.unsplash.com/photo-1503428593586-e225b39bddfe?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -56,7 +66,7 @@ export default function Course({ courseId }: PageProps) {
             />
           </div>
           {/* info */}
-          <div className="ml-[32px] flex flex-col  gap-4">
+          <div className="mb-[60px] ml-[40px] flex flex-col gap-4">
             {/* user */}
             <div className="flex flex-col gap-2">
               <div className="flex flex-row gap-2">

@@ -9,7 +9,7 @@ export const Navbar = (props: { user: DefaultSession["user"] }) => {
   const [search, setSearch] = React.useState("");
   if (!user) return <></>;
   return (
-    <div className="fixed z-30 hidden h-16 w-full items-center justify-center p-2 px-10 md:flex dark:bg-[#0F172A]">
+    <div className="fixed z-30 hidden h-16 w-full items-center justify-center bg-white p-2 px-10 md:flex dark:bg-[#0F172A]">
       <div className="logo  ml-12 flex h-full flex-none transform items-center justify-center text-xl duration-500 ease-in-out dark:text-white">
         Neetwork
       </div>

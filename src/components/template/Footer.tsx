@@ -5,7 +5,7 @@ import { EmailFooterIcon, FacebookIcon, InstagramIcon } from "../UI/Icons";
 
 export const Footer = () => {
   return (
-    <div className="flex h-[100px] w-full flex-row items-center justify-between bg-[#C7E21C] px-8">
+    <div className="flex h-[100px] w-full flex-row items-center justify-between bg-[#C7E21C] px-[40px]">
       <div className="flex flex-row items-center gap-4">
         <div className="relative ml-[6vh] h-[68px] w-[68px]">
           <Image src={Logo} alt="logo" layout="fill" objectFit="contain" />
