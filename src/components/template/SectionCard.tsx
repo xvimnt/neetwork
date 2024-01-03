@@ -28,23 +28,23 @@ export const SectionCard = ({
       <div className="flex flex-col">
         {/* header */}
         <div className="flex flex-row justify-between">
-          <h2 className="ml-2 h-[36.6px] w-[233.312px] shrink-0 text-[20px] font-semibold not-italic leading-[normal] text-black">
+          <h2 className="ml-2 h-[36.6px] w-[233.312px] shrink-0 text-[20px] font-normal not-italic leading-[normal] text-black">
             {title}
           </h2>
           <div className="flex flex-row gap-2">
             {/* plus */}
             <button onClick={handleAdd} className="relative">
-              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#379E3C]" />
+              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#379E3C] hover:fill-[#4cc452]" />
               <PlusIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
             </button>
             {/* edit */}
             <button onClick={handleEdit} className="relative">
-              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#41869F]" />
+              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#41869F] hover:fill-[#51aed0]" />
               <EditIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
             </button>
             {/* delete */}
             <button onClick={handleDelete} className="relative">
-              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#E02929]" />
+              <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#E02929] hover:fill-[#ec5858]" />
               <XIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
             </button>
           </div>

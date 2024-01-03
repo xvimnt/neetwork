@@ -1,0 +1,89 @@
+import React from "react";
+import { SectionCard } from "./SectionCard";
+import { CircleIcon, PlusIcon, DownArrowIcon, XIcon } from "../UI/Icons";
+import UIModal from "../UI/UIModal";
+import { AddCourseSection } from "./AddCourseSection";
+
+interface SubItemI {
+  title: string;
+  handleEdit: () => void;
+  handleDelete: () => void;
+}
+
+interface ItemI {
+  title: string;
+  handleEdit: () => void;
+  handleDelete: () => void;
+  handleAdd: () => void;
+  items: SubItemI[];
+}
+
+interface PropsI {
+  items: ItemI[];
+  title: string;
+  handleDelete: () => void;
+  handleAdd: () => void;
+}
+
+export const SectionCourse = ({
+  items,
+  title,
+  handleAdd,
+  handleDelete,
+}: PropsI) => {
+  const [expanded, setExpanded] = React.useState(false);
+
+  return (
+    <>
+      {/* title and button */}
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row items-center gap-4">
+          <span className="text-[22px] font-semibold not-italic leading-[normal] text-black">
+            {title}
+          </span>
+          {/* dropdown button */}
+          <button
+            className="relative"
+            onClick={() => setExpanded((prev) => !prev)}
+          >
+            <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#41869F] hover:fill-[#51aed0]" />
+            <DownArrowIcon
+              className={`absolute left-[10px] top-[10px] h-[20px] w-[20px]  fill-[#FFFFFF] stroke-white ${
+                expanded ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {/* delete */}
+          <button onClick={handleDelete} className="relative">
+            <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#E02929] hover:fill-[#ec5858]" />
+            <XIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
+          </button>
+        </div>
+        {/* add section */}
+        <button
+          onClick={handleAdd}
+          className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e]"
+        >
+          <span className="font-semibold not-italic leading-[normal] text-black">
+            Agregar Seccion
+          </span>
+          <PlusIcon className="h-[24px] w-[24px]  fill-[#000000]" />
+        </button>
+      </div>
+      {/* cards */}
+      <div className={`flex flex-col gap-4 ${expanded ? "" : "hidden"}`}>
+        {/* card */}
+        {items.map((item, index) => (
+          <SectionCard
+            key={item.title}
+            title={`${index + 1}. ${item.title}`}
+            handleDelete={item.handleDelete}
+            handleEdit={item.handleEdit}
+            handleAdd={item.handleAdd}
+            items={item.items}
+          />
+        ))}
+      </div>
+    </>
+  );
+};

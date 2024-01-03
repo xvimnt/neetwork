@@ -5,55 +5,18 @@ import {
 import Image from "next/image";
 import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
-import WhiteGradient from "~/assets/svg/white-gradient.svg";
-import {
-  BannerArrowIcon,
-  CircleIcon,
-  GraduationIcon,
-  PlusIcon,
-} from "~/components/UI/Icons";
-import { ExplorerOutsideContainer } from "~/components/template/ExplorerOutsideContainer";
-import Link from "next/link";
-import { SectionCard } from "~/components/template/SectionCard";
-import { SectionCards } from "~/components/template/SectionCards";
+import { PlusIcon } from "~/components/UI/Icons";
+import { SectionCourse } from "~/components/template/SectionCourse";
+import UIModal from "~/components/UI/UIModal";
+import { AddCourse } from "~/components/template/AddCourse";
+import { type FormEvent, useState } from "react";
+import { AddCourseSection } from "~/components/template/AddCourseSection";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ userId }: PageProps) {
-  const videos = [
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-  ];
-  const sections = [
-    "Introduccion",
-    "Fundamentos",
-    "Instalacion",
-    "Configuracion",
-  ];
-  //   const gray = 'BDBDBD'
-
-  const exampleItems = [
+  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [showAddSectionModal, setShowAddSectionModal] = useState(false);
+  const exampleSubItems = [
     {
       title: "Bienvenida al curso",
       handleEdit: () => {},
@@ -70,8 +33,72 @@ export default function Course({ userId }: PageProps) {
       handleDelete: () => {},
     },
   ];
+  const exampleItems = [
+    {
+      title: "Introduccion",
+      handleEdit: () => {},
+      handleDelete: () => {},
+      handleAdd: () => {},
+      items: exampleSubItems,
+    },
+    {
+      title: "Fundamentos",
+      handleEdit: () => {},
+      handleDelete: () => {},
+      handleAdd: () => {},
+      items: exampleSubItems,
+    },
+    {
+      title: "Uso de WooCommerce",
+      handleEdit: () => {},
+      handleDelete: () => {},
+      handleAdd: () => {},
+      items: exampleSubItems,
+    },
+    {
+      title: "Configuracion",
+      handleEdit: () => {},
+      handleDelete: () => {},
+      handleAdd: () => {},
+      items: exampleSubItems,
+    },
+  ];
+  const courses = [
+    {
+      title: "Curso de WooCommerce",
+      items: exampleItems,
+    },
+    {
+      title: "Curso de React",
+      items: exampleItems,
+    },
+  ];
+
+  const handleDeleteCourse = () => {};
+  const handleAddCourseSection = () => {
+    setShowAddSectionModal(true);
+  };
+
   return (
     <LayoutSigned>
+      <UIModal
+        title="Agregar Curso"
+        setShowModal={setShowAddCourseModal}
+        showModal={showAddCourseModal}
+      >
+        <AddCourse />
+      </UIModal>
+      <UIModal
+        title="Agregar Seccion"
+        setShowModal={setShowAddSectionModal}
+        showModal={showAddSectionModal}
+      >
+        <AddCourseSection
+          handleSubmit={(e: FormEvent) => {
+            e.preventDefault();
+          }}
+        />
+      </UIModal>
       <div className="flex flex-col gap-8">
         {/* user cards */}
         <div className="flex flex-row">
@@ -97,7 +124,10 @@ export default function Course({ userId }: PageProps) {
               </div>
             </div>
             {/* add course */}
-            <button className="inline-flex items-center justify-center gap-[19px] rounded-[50px] bg-[#c7e21c] px-8 py-2.5">
+            <button
+              onClick={() => setShowAddCourseModal(true)}
+              className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e] "
+            >
               <span className="font-semibold not-italic leading-[normal] text-black">
                 Agregar Curso
               </span>
@@ -109,8 +139,8 @@ export default function Course({ userId }: PageProps) {
             <span className="text-xl font-semibold not-italic leading-[normal] text-black">
               Profesion:
             </span>
-            <input className="h-[45px] w-[272px] rounded-md border border-black" />
-            <button className="inline-flex items-center justify-center gap-[19px] rounded-[50px] bg-[#c7e21c] px-[35px] py-2.5">
+            <input className="border-blpeer-aria-checked: h-[45px] w-[272px] rounded-md border p-2" />
+            <button className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-[35px] py-2.5 hover:bg-[#eeff7e]">
               <span className="font-semibold not-italic leading-[normal] text-black">
                 Guardar
               </span>
@@ -119,45 +149,18 @@ export default function Course({ userId }: PageProps) {
         </div>
         {/* courses */}
         <div className="flex flex-col gap-8 py-4">
-          {/* title and button */}
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-row gap-4">
-              <span className="text-[22px] font-bold not-italic leading-[normal] text-black">
-                1.Curso de WooComerce
-              </span>
-              {/* dropdown button */}
-              <div className="relative">
-                <CircleIcon className="h-[43px] w-11 shrink-0 fill-[#F0FCFF] stroke-[#797979] stroke-[1px]" />
-                <BannerArrowIcon className="absolute left-[8px] top-[8px] h-[25px] w-[25px] rotate-[270deg]" />
-              </div>
-            </div>
-            {/* add section */}
-            <button className="inline-flex items-center justify-center gap-[19px] rounded-[50px] bg-[#c7e21c] px-8 py-2.5">
-              <span className="font-semibold not-italic leading-[normal] text-black">
-                Agregar Seccion
-              </span>
-              <PlusIcon className="h-[24px] w-[24px]  fill-[#000000]" />
-            </button>
-          </div>
-          {/* cards */}
-          <SectionCards
-            items={[
-              {
-                title: "Introduccion",
-                handleEdit: () => {},
-                handleDelete: () => {},
-                handleAdd: () => {},
-                items: exampleItems,
-              },
-              {
-                title: "Fundamentos",
-                handleEdit: () => {},
-                handleDelete: () => {},
-                handleAdd: () => {},
-                items: exampleItems,
-              },
-            ]}
-          />
+          <h2 className="text-[30px] font-bold not-italic leading-[normal] text-black">
+            Tus cursos
+          </h2>
+          {courses.map((course, index) => (
+            <SectionCourse
+              handleAdd={handleAddCourseSection}
+              handleDelete={handleDeleteCourse}
+              key={course.title}
+              items={course.items}
+              title={`${index + 1}. ${course.title}`}
+            />
+          ))}
         </div>
       </div>
     </LayoutSigned>

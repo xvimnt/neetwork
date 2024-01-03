@@ -504,7 +504,7 @@ export const AddIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const WhatsAppIcon = () => {
+export const WhatsAppIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-10 w-10"
@@ -516,7 +516,7 @@ export const WhatsAppIcon = () => {
     </svg>
   );
 };
-export const AdressIcon = () => {
+export const AdressIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-4 w-4"
@@ -528,7 +528,7 @@ export const AdressIcon = () => {
     </svg>
   );
 };
-export const EmailIcon = () => {
+export const EmailIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-4 w-4"
@@ -540,7 +540,7 @@ export const EmailIcon = () => {
     </svg>
   );
 };
-export const PhoneIcon = () => {
+export const PhoneIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-4 w-4"
@@ -552,7 +552,7 @@ export const PhoneIcon = () => {
     </svg>
   );
 };
-export const CalendarIcon = () => {
+export const CalendarIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-4 w-4"
@@ -564,7 +564,7 @@ export const CalendarIcon = () => {
     </svg>
   );
 };
-export const TransactionIcon = () => {
+export const TransactionIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -576,7 +576,7 @@ export const TransactionIcon = () => {
     </svg>
   );
 };
-export const CoinsIcon = () => {
+export const CoinsIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -588,7 +588,7 @@ export const CoinsIcon = () => {
     </svg>
   );
 };
-export const PriceIcon = () => {
+export const PriceIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -600,7 +600,7 @@ export const PriceIcon = () => {
     </svg>
   );
 };
-export const LengthIcon = () => {
+export const LengthIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -612,7 +612,7 @@ export const LengthIcon = () => {
     </svg>
   );
 };
-export const MapIcon = () => {
+export const MapIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -624,7 +624,7 @@ export const MapIcon = () => {
     </svg>
   );
 };
-export const GalleryIcon = () => {
+export const GalleryIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -639,13 +639,14 @@ export const GalleryIcon = () => {
     </svg>
   );
 };
-export const DownArrowIcon = () => {
+export const DownArrowIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
+      {...other}
     >
       <path
         fillRule="evenodd"
@@ -656,7 +657,7 @@ export const DownArrowIcon = () => {
   );
 };
 
-export const UpArrowIcon = () => {
+export const UpArrowIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       className="h-5 w-5"
@@ -673,7 +674,7 @@ export const UpArrowIcon = () => {
   );
 };
 
-export const LogoutIcon = () => {
+export const LogoutIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
