@@ -32,6 +32,7 @@ export const SectionCourse = ({
   handleDelete,
 }: PropsI) => {
   const [expanded, setExpanded] = React.useState(false);
+  const hasItems = items && items.length > 0;
 
   return (
     <>
@@ -73,16 +74,24 @@ export const SectionCourse = ({
       {/* cards */}
       <div className={`flex flex-col gap-4 ${expanded ? "" : "hidden"}`}>
         {/* card */}
-        {items.map((item, index) => (
-          <SectionCard
-            key={item.title}
-            title={`${index + 1}. ${item.title}`}
-            handleDelete={item.handleDelete}
-            handleEdit={item.handleEdit}
-            handleAdd={item.handleAdd}
-            items={item.items}
-          />
-        ))}
+        {hasItems ? (
+          items.map((item, index) => (
+            <SectionCard
+              key={item.title}
+              title={`${index + 1}. ${item.title}`}
+              handleDelete={item.handleDelete}
+              handleEdit={item.handleEdit}
+              handleAdd={item.handleAdd}
+              items={item.items}
+            />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <span className="text-[20px] font-bold not-italic leading-[normal] text-black">
+              No tienes secciones
+            </span>
+          </div>
+        )}
       </div>
     </>
   );

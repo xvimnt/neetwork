@@ -20,30 +20,32 @@ model Course {
     skills      String[]
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
-    courseSection  CourseSection[]
+    user        User     @relation(fields: [userId], references: [id])
+    userId      String
+    sections  Section[]
     assignations Assignation[]
 }
 
-model CourseSection {
+model Section {
     id          String   @id @default(cuid())
     title       String
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
-    position    Int
+    position    Int     @default(autoincrement())
     course      Course   @relation(fields: [courseId], references: [id])
     courseId    String
-    courseLesson  CourseLesson[]
+    lessons  Lesson[]
 }
 
-model CourseLesson {
+model Lesson {
     id          String   @id @default(cuid())
     title       String
     videoUrl    String
-    position    Int
+    position    Int @default(autoincrement())
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
-    courseSection  CourseSection   @relation(fields: [courseSectionId], references: [id])
-    courseSectionId    String
+    Section  Section   @relation(fields: [SectionId], references: [id])
+    SectionId    String
 }
 
 model Assignation {
@@ -101,6 +103,7 @@ model User {
     sessions      Session[]
     createdAt   DateTime  @default(now()) @map("created_at")
     assignations Assignation[]
+    courses      Course[]
 }
 
 model VerificationToken {

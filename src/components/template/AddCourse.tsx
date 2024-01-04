@@ -1,32 +1,31 @@
-import React, { type FormEvent } from "react";
+import React, { type RefObject } from "react";
 import { FormLabelLayout } from "../forms/FormLabelLayout";
 import { FormInput } from "../forms/FormInput";
 import { FormTextArea } from "../forms/FormTextArea";
 import UIUploader from "../UI/UIUploader";
 import { FormLayout } from "../forms/FormLayout";
 
-export const AddCourse = () => {
-  const [file, setFile] = React.useState<File | null>(null);
+interface PropsI {
+  addCourseFormRef: RefObject<HTMLFormElement>;
+  file: File | null;
+  setFile: (file: File | null) => void;
+}
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("submit");
-  };
-
+export const AddCourse = ({ addCourseFormRef, file, setFile }: PropsI) => {
   return (
-    <FormLayout buttonLabel="Agregar" onSubmit={handleSubmit}>
+    <form ref={addCourseFormRef}>
       <FormLabelLayout label="Nombre">
-        <FormInput placeholder="Nombre del curso" />
+        <FormInput placeholder="Nombre del curso" name="title" />
       </FormLabelLayout>
       <FormLabelLayout label="Habilidades Nuevas">
-        <FormInput placeholder="Emprendimiento, Marketing" />
+        <FormInput placeholder="Emprendimiento, Marketing" name="skills" />
       </FormLabelLayout>
       <FormLabelLayout label="Descripcion">
-        <FormTextArea placeholder="Descripcion del curso" />
+        <FormTextArea placeholder="Descripcion del curso" name="description" />
       </FormLabelLayout>
       <FormLabelLayout label="Imagen">
         <UIUploader file={file} setFile={setFile} hasUploadButton={false} />
       </FormLabelLayout>
-    </FormLayout>
+    </form>
   );
 };

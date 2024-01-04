@@ -1,18 +1,17 @@
-import React, { type FormEvent } from "react";
+import React from "react";
 import { FormLabelLayout } from "../forms/FormLabelLayout";
 import { FormInput } from "../forms/FormInput";
-import { FormLayout } from "../forms/FormLayout";
 
 interface PropsI {
-  handleSubmit: (e: FormEvent) => void;
+  formRef: React.RefObject<HTMLFormElement>;
 }
 
-export const AddCourseSection = ({ handleSubmit }: PropsI) => {
+export const AddCourseSection = ({ formRef }: PropsI) => {
   return (
-    <FormLayout buttonLabel="Agregar" onSubmit={handleSubmit}>
+    <form ref={formRef}>
       <FormLabelLayout label="Nombre">
-        <FormInput placeholder="Nombre de la seccion" />
+        <FormInput placeholder="Nombre de la seccion" name="title" />
       </FormLabelLayout>
-    </FormLayout>
+    </form>
   );
 };

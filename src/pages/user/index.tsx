@@ -1,21 +1,20 @@
-import {
-  type GetServerSidePropsContext,
-  type InferGetStaticPropsType,
-} from "next";
 import Image from "next/image";
 import { LayoutSigned } from "~/components/layouts/LayoutSigned";
-import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { PlusIcon } from "~/components/UI/Icons";
 import { SectionCourse } from "~/components/template/SectionCourse";
-import UIModal from "~/components/UI/UIModal";
-import { AddCourse } from "~/components/template/AddCourse";
-import { type FormEvent, useState } from "react";
-import { AddCourseSection } from "~/components/template/AddCourseSection";
+import { useState } from "react";
+import { AddCourseContainer } from "~/components/template/AddCourseContainer";
+import { AddCourseSectionContainer } from "~/components/template/AddCourseSectionContainer";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
+import { UILoadingPage } from "~/components/UI/UILoader";
 
-type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
-export default function Course({ userId }: PageProps) {
+export default function Course() {
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
   const [showAddSectionModal, setShowAddSectionModal] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState<string>("");
+  const session = useSession();
+
   const exampleSubItems = [
     {
       title: "Bienvenida al curso",
@@ -75,30 +74,35 @@ export default function Course({ userId }: PageProps) {
   ];
 
   const handleDeleteCourse = () => {};
-  const handleAddCourseSection = () => {
+  const handleAddCourseSection = (courseId: string) => {
+    setSelectedCourseId(courseId);
     setShowAddSectionModal(true);
   };
 
+  const { data, fetchNextPage, isLoading } =
+    api.course.readInfinite.useInfiniteQuery(
+      {
+        limit: 5,
+        userId: session.data?.user.id,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        // initialCursor: 1, // <-- optional you can pass an initialCursor
+      },
+    );
+
+  if (isLoading) return <UILoadingPage />;
   return (
     <LayoutSigned>
-      <UIModal
-        title="Agregar Curso"
-        setShowModal={setShowAddCourseModal}
-        showModal={showAddCourseModal}
-      >
-        <AddCourse />
-      </UIModal>
-      <UIModal
-        title="Agregar Seccion"
-        setShowModal={setShowAddSectionModal}
-        showModal={showAddSectionModal}
-      >
-        <AddCourseSection
-          handleSubmit={(e: FormEvent) => {
-            e.preventDefault();
-          }}
-        />
-      </UIModal>
+      <AddCourseContainer
+        setShowAddCourseModal={setShowAddCourseModal}
+        showAddCourseModal={showAddCourseModal}
+      />
+      <AddCourseSectionContainer
+        courseId={selectedCourseId}
+        setShowAddSectionModal={setShowAddSectionModal}
+        showAddSectionModal={showAddSectionModal}
+      />
       <div className="flex flex-col gap-8">
         {/* user cards */}
         <div className="flex flex-row">
@@ -152,44 +156,41 @@ export default function Course({ userId }: PageProps) {
           <h2 className="text-[30px] font-bold not-italic leading-[normal] text-black">
             Tus cursos
           </h2>
-          {courses.map((course, index) => (
-            <SectionCourse
-              handleAdd={handleAddCourseSection}
-              handleDelete={handleDeleteCourse}
-              key={course.title}
-              items={course.items}
-              title={`${index + 1}. ${course.title}`}
-            />
-          ))}
+          {!data || data.pages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-4">
+              <span className="text-[20px] font-bold not-italic leading-[normal] text-black">
+                No tienes cursos
+              </span>
+            </div>
+          ) : (
+            data.pages.map((course) => (
+              <>
+                {course.courses.map((course, index) => (
+                  <SectionCourse
+                    handleAdd={() => handleAddCourseSection(course.id)}
+                    handleDelete={handleDeleteCourse}
+                    key={course.title}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    items={course.sections.map((section) => ({
+                      title: section.title,
+                      handleEdit: () => {},
+                      handleDelete: () => {},
+                      handleAdd: () => {},
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                      items: section.lessons.map((lesson) => ({
+                        title: lesson.title,
+                        handleEdit: () => {},
+                        handleDelete: () => {},
+                      })),
+                    }))}
+                    title={`${index + 1}. ${course.title}`}
+                  />
+                ))}
+              </>
+            ))
+          )}
         </div>
       </div>
     </LayoutSigned>
   );
 }
-
-// Fetch data before the page loads
-export const getStaticProps = (ctx: GetServerSidePropsContext) => {
-  const helpers = generateSSGHelper();
-
-  const slug = ctx.params?.slug as string;
-
-  if (!slug) throw new Error("No slug provided");
-
-  const userId = parseInt(slug);
-
-  //   helpers.lot.getLotById.prefetch({ id: lotId }).catch((err) => {
-  //     console.error(err);
-  //   });
-
-  return {
-    props: {
-      // very important - use `trpcState` as the key
-      trpcState: helpers.dehydrate(),
-      userId,
-    },
-  };
-};
-
-export const getStaticPaths = () => {
-  return { paths: [], fallback: "blocking" };
-};
