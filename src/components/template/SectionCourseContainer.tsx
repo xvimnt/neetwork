@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { type Course } from "@prisma/client";
 import { confirmAlert } from "react-confirm-alert";
 import { ConfirmDialog } from "./ConfirmDialog";
+import toast from "react-hot-toast";
 
 interface PropsI {
   handleEditCourse: (course: Course) => void;
@@ -18,6 +19,23 @@ export const SectionCourseContainer = ({
 }: PropsI) => {
   const session = useSession();
 
+  // use the `useMutation` hook to create a mutation
+  const ctx = api.useContext();
+  const { mutate: deleteCourse, isLoading: isDeleting } =
+    api.course.delete.useMutation({
+      onSuccess: () => {
+        ctx.course.readInfinite.invalidate().catch((err) => {
+          console.error(err);
+        });
+      },
+      onError: (err) => {
+        const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+        toast.error(
+          errorMessage ?? "Something went wrong. Please try again later.",
+        );
+      },
+    });
+
   const handleDeleteCourse = (course: Course) => {
     confirmAlert({
       customUI: ({ onClose }) => {
@@ -25,7 +43,11 @@ export const SectionCourseContainer = ({
           <ConfirmDialog
             title="Estas seguro?"
             onClose={onClose}
-            onConfirm={() => {}}
+            onConfirm={() => {
+              deleteCourse({
+                id: course.id,
+              });
+            }}
           >
             <p className="text-md font-normal">
               Estas a punto de eliminar el curso de{" "}
@@ -50,7 +72,7 @@ export const SectionCourseContainer = ({
       },
     );
   const hasData = data && data.pages.length > 0;
-  if (isLoading) return <UILoadingPage />;
+  if (isLoading || isDeleting) return <UILoadingPage />;
 
   return !hasData ? (
     <div className="flex flex-col items-center justify-center gap-4">

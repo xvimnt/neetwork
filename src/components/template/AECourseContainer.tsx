@@ -24,12 +24,12 @@ export const AECourseContainer = ({
   const { data: session } = useSession();
 
   // use the `useMutation` hook to create a mutation
-  // const ctx = api.useContext();
-  const { mutate, isLoading } = api.course.create.useMutation({
+  const ctx = api.useUtils();
+  const { mutate, isLoading: isCreating } = api.course.create.useMutation({
     onSuccess: () => {
-      //   ctx.user.getInfinite.invalidate().catch((err) => {
-      //     console.error(err);
-      //   });
+      ctx.course.readInfinite.invalidate().catch((err) => {
+        console.error(err);
+      });
     },
     onError: (err) => {
       const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
@@ -38,6 +38,20 @@ export const AECourseContainer = ({
       );
     },
   });
+  const { mutate: update, isLoading: isUpdating } =
+    api.course.update.useMutation({
+      onSuccess: () => {
+        ctx.course.readInfinite.invalidate().catch((err) => {
+          console.error(err);
+        });
+      },
+      onError: (err) => {
+        const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+        toast.error(
+          errorMessage ?? "Something went wrong. Please try again later.",
+        );
+      },
+    });
 
   const handleAddCourseSave = async () => {
     if (addCourseFormRef.current) {
@@ -60,11 +74,39 @@ export const AECourseContainer = ({
         toast.error("Las habilidades son requeridas");
         return;
       }
+
+      // If we not update the image on edit
+      if (selectedCourse && !file) {
+        update({
+          id: selectedCourse.id,
+          title: formData.get("title") as string,
+          description: formData.get("description") as string,
+          skills: formData.get("skills") as string,
+        });
+        setShowAddCourseModal(false);
+        return;
+      }
+
       if (!file) {
         toast.error("La imagen es requerida");
         return;
       }
       const courseImageUrl = await uploadFile(file);
+
+      // Update
+      if (selectedCourse) {
+        update({
+          id: selectedCourse.id,
+          title: formData.get("title") as string,
+          description: formData.get("description") as string,
+          skills: formData.get("skills") as string,
+          imageUrl: courseImageUrl,
+        });
+        setShowAddCourseModal(false);
+        return;
+      }
+
+      // Create
       mutate({
         title: formData.get("title") as string,
         description: formData.get("description") as string,
@@ -76,7 +118,7 @@ export const AECourseContainer = ({
     }
   };
 
-  if (isLoading) return <UILoadingPage />;
+  if (isCreating || isUpdating) return <UILoadingPage />;
 
   return (
     <UIModal

@@ -94,7 +94,7 @@ export const courseRouter = createTRPCRouter({
         id: z.string(),
         title: z.string(),
         description: z.string(),
-        imageUrl: z.string(),
+        imageUrl: z.string().optional(),
         skills: z.string(),
       }),
     )
