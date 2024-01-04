@@ -16,7 +16,7 @@ const config = {
       "bucketproyectoespecial.s3.us-east-2.amazonaws.com",
       "res.akamaized.net",
       "i.insider.com",
-      "d7lrki2kktov4uja.public.blob.vercel-storage.com",
+      "36pwslfjealjhvpc.public.blob.vercel-storage.com",
     ],
   },
 

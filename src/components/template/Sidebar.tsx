@@ -52,7 +52,7 @@ export const Sidebar = () => {
     {
       name: "Mis Cursos",
       icon: <VideoIcon className="h-5 w-5" />,
-      link: `/user/${session?.user?.id}}`,
+      link: `/user`,
     },
     {
       name: "Salir",

@@ -12,7 +12,7 @@ interface PropsI {
   courseId: string;
 }
 
-export const AddCourseSectionContainer = ({
+export const AECourseSectionContainer = ({
   showAddSectionModal,
   setShowAddSectionModal,
   courseId,

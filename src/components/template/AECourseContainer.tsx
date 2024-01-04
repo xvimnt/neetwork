@@ -6,15 +6,18 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { uploadFile } from "~/utils/functions";
 import { UILoadingPage } from "../UI/UILoader";
+import { type Course } from "@prisma/client";
 
 interface PropsI {
   showAddCourseModal: boolean;
   setShowAddCourseModal: (show: boolean) => void;
+  selectedCourse?: Course;
 }
 
-export const AddCourseContainer = ({
+export const AECourseContainer = ({
   showAddCourseModal,
   setShowAddCourseModal,
+  selectedCourse,
 }: PropsI) => {
   const [file, setFile] = useState<File | null>(null);
   const addCourseFormRef = useRef<HTMLFormElement>(null);
@@ -77,7 +80,7 @@ export const AddCourseContainer = ({
 
   return (
     <UIModal
-      title="Agregar Curso"
+      title={selectedCourse ? "Editar curso" : "Agregar curso"}
       setShowModal={setShowAddCourseModal}
       showModal={showAddCourseModal}
       onSave={handleAddCourseSave}
@@ -86,6 +89,10 @@ export const AddCourseContainer = ({
         addCourseFormRef={addCourseFormRef}
         file={file}
         setFile={setFile}
+        defaultTitle={selectedCourse?.title}
+        defaultDescription={selectedCourse?.description}
+        defaultSkills={selectedCourse?.skills.join(",")}
+        defaultImage={selectedCourse?.imageUrl}
       />
     </UIModal>
   );

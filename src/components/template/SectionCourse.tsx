@@ -1,8 +1,12 @@
 import React from "react";
 import { SectionCard } from "./SectionCard";
-import { CircleIcon, PlusIcon, DownArrowIcon, XIcon } from "../UI/Icons";
-import UIModal from "../UI/UIModal";
-import { AddCourseSection } from "./AddCourseSection";
+import {
+  CircleIcon,
+  PlusIcon,
+  DownArrowIcon,
+  XIcon,
+  EditIcon,
+} from "../UI/Icons";
 
 interface SubItemI {
   title: string;
@@ -22,16 +26,19 @@ interface PropsI {
   items: ItemI[];
   title: string;
   handleDelete: () => void;
-  handleAdd: () => void;
+  handleAddSection: () => void;
+  handleEdit: () => void;
 }
 
 export const SectionCourse = ({
   items,
   title,
-  handleAdd,
+  handleAddSection,
   handleDelete,
+  handleEdit,
 }: PropsI) => {
   const [expanded, setExpanded] = React.useState(false);
+  const handleExpanded = () => setExpanded((prev) => !prev);
   const hasItems = items && items.length > 0;
 
   return (
@@ -43,10 +50,7 @@ export const SectionCourse = ({
             {title}
           </span>
           {/* dropdown button */}
-          <button
-            className="relative"
-            onClick={() => setExpanded((prev) => !prev)}
-          >
+          <button className="relative" onClick={handleExpanded}>
             <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#41869F] hover:fill-[#51aed0]" />
             <DownArrowIcon
               className={`absolute left-[10px] top-[10px] h-[20px] w-[20px]  fill-[#FFFFFF] stroke-white ${
@@ -59,10 +63,15 @@ export const SectionCourse = ({
             <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#E02929] hover:fill-[#ec5858]" />
             <XIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
           </button>
+          {/* edit */}
+          <button onClick={handleEdit} className="relative">
+            <CircleIcon className="h-[40px] w-[40px] shrink-0 fill-[#41869F] hover:fill-[#51aed0]" />
+            <EditIcon className="absolute left-[10px] top-[10px] h-[20px] w-[20px] fill-[#FFFFFF] stroke-white" />
+          </button>
         </div>
         {/* add section */}
         <button
-          onClick={handleAdd}
+          onClick={handleAddSection}
           className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e]"
         >
           <span className="font-semibold not-italic leading-[normal] text-black">

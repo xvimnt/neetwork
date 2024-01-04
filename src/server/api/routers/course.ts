@@ -71,4 +71,46 @@ export const courseRouter = createTRPCRouter({
         nextCursor,
       };
     }),
+
+  delete: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const course = await ctx.db.course.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return course;
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string(),
+        imageUrl: z.string(),
+        skills: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const course = await ctx.db.course.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
+          imageUrl: input.imageUrl,
+          skills: input.skills.split(",").map((skill) => skill.trim()),
+        },
+      });
+
+      return course;
+    }),
 });

@@ -1,108 +1,50 @@
 import Image from "next/image";
 import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { PlusIcon } from "~/components/UI/Icons";
-import { SectionCourse } from "~/components/template/SectionCourse";
 import { useState } from "react";
-import { AddCourseContainer } from "~/components/template/AddCourseContainer";
-import { AddCourseSectionContainer } from "~/components/template/AddCourseSectionContainer";
-import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
-import { UILoadingPage } from "~/components/UI/UILoader";
+import { AECourseContainer } from "~/components/template/AECourseContainer";
+import { AECourseSectionContainer } from "~/components/template/AECourseSectionContainer";
+
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { type Course } from "@prisma/client";
+import { SectionCourseContainer } from "~/components/template/SectionCourseContainer";
 
 export default function Course() {
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
   const [showAddSectionModal, setShowAddSectionModal] = useState(false);
-  const [selectedCourseId, setSelectedCourseId] = useState<string>("");
-  const session = useSession();
+  const [selectedCourse, setSelectedCourse] = useState<Course | undefined>();
 
-  const exampleSubItems = [
-    {
-      title: "Bienvenida al curso",
-      handleEdit: () => {},
-      handleDelete: () => {},
-    },
-    {
-      title: "Porque usar WooCommerce",
-      handleEdit: () => {},
-      handleDelete: () => {},
-    },
-    {
-      title: "Como funciona WooCommerce",
-      handleEdit: () => {},
-      handleDelete: () => {},
-    },
-  ];
-  const exampleItems = [
-    {
-      title: "Introduccion",
-      handleEdit: () => {},
-      handleDelete: () => {},
-      handleAdd: () => {},
-      items: exampleSubItems,
-    },
-    {
-      title: "Fundamentos",
-      handleEdit: () => {},
-      handleDelete: () => {},
-      handleAdd: () => {},
-      items: exampleSubItems,
-    },
-    {
-      title: "Uso de WooCommerce",
-      handleEdit: () => {},
-      handleDelete: () => {},
-      handleAdd: () => {},
-      items: exampleSubItems,
-    },
-    {
-      title: "Configuracion",
-      handleEdit: () => {},
-      handleDelete: () => {},
-      handleAdd: () => {},
-      items: exampleSubItems,
-    },
-  ];
-  const courses = [
-    {
-      title: "Curso de WooCommerce",
-      items: exampleItems,
-    },
-    {
-      title: "Curso de React",
-      items: exampleItems,
-    },
-  ];
+  // Course CRUD
+  const handleAddCourse = () => {
+    setSelectedCourse(undefined);
+    setShowAddCourseModal(true);
+  };
 
-  const handleDeleteCourse = () => {};
-  const handleAddCourseSection = (courseId: string) => {
-    setSelectedCourseId(courseId);
+  const handleEditCourse = (course: Course) => {
+    setSelectedCourse(course);
+    setShowAddCourseModal(true);
+  };
+
+  // Section CRUD
+  const handleAddSection = (course: Course) => {
+    setSelectedCourse(course);
     setShowAddSectionModal(true);
   };
 
-  const { data, fetchNextPage, isLoading } =
-    api.course.readInfinite.useInfiniteQuery(
-      {
-        limit: 5,
-        userId: session.data?.user.id,
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-        // initialCursor: 1, // <-- optional you can pass an initialCursor
-      },
-    );
-
-  if (isLoading) return <UILoadingPage />;
   return (
     <LayoutSigned>
-      <AddCourseContainer
+      <AECourseContainer
         setShowAddCourseModal={setShowAddCourseModal}
         showAddCourseModal={showAddCourseModal}
+        selectedCourse={selectedCourse}
       />
-      <AddCourseSectionContainer
-        courseId={selectedCourseId}
-        setShowAddSectionModal={setShowAddSectionModal}
-        showAddSectionModal={showAddSectionModal}
-      />
+      {selectedCourse && (
+        <AECourseSectionContainer
+          courseId={selectedCourse.id}
+          setShowAddSectionModal={setShowAddSectionModal}
+          showAddSectionModal={showAddSectionModal}
+        />
+      )}
       <div className="flex flex-col gap-8">
         {/* user cards */}
         <div className="flex flex-row">
@@ -129,7 +71,7 @@ export default function Course() {
             </div>
             {/* add course */}
             <button
-              onClick={() => setShowAddCourseModal(true)}
+              onClick={handleAddCourse}
               className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e] "
             >
               <span className="font-semibold not-italic leading-[normal] text-black">
@@ -156,39 +98,10 @@ export default function Course() {
           <h2 className="text-[30px] font-bold not-italic leading-[normal] text-black">
             Tus cursos
           </h2>
-          {!data || data.pages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-4">
-              <span className="text-[20px] font-bold not-italic leading-[normal] text-black">
-                No tienes cursos
-              </span>
-            </div>
-          ) : (
-            data.pages.map((course) => (
-              <>
-                {course.courses.map((course, index) => (
-                  <SectionCourse
-                    handleAdd={() => handleAddCourseSection(course.id)}
-                    handleDelete={handleDeleteCourse}
-                    key={course.title}
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    items={course.sections.map((section) => ({
-                      title: section.title,
-                      handleEdit: () => {},
-                      handleDelete: () => {},
-                      handleAdd: () => {},
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                      items: section.lessons.map((lesson) => ({
-                        title: lesson.title,
-                        handleEdit: () => {},
-                        handleDelete: () => {},
-                      })),
-                    }))}
-                    title={`${index + 1}. ${course.title}`}
-                  />
-                ))}
-              </>
-            ))
-          )}
+          <SectionCourseContainer
+            handleEditCourse={handleEditCourse}
+            handleAddSection={handleAddSection}
+          />
         </div>
       </div>
     </LayoutSigned>
