@@ -1,14 +1,11 @@
 import Link from "next/link";
 import React from "react";
 import {
-  CategoryIcon,
   DashboardIcon,
-  GalleryIcon,
   HamburguerIcon,
   HouseIcon,
   LogoutIcon,
   MenuIcon,
-  StatsIcon,
   UsersIcon,
   VideoIcon,
 } from "../UI/Icons";
@@ -28,21 +25,6 @@ export const Sidebar = () => {
       icon: <DashboardIcon />,
       link: "/courses",
     },
-    // {
-    //   name: "Proyectos",
-    //   icon: <GalleryIcon />,
-    //   link: "/projects",
-    // },
-    // {
-    //   name: "Calendario",
-    //   icon: <CalendarIcon />,
-    //   link: "/calendar",
-    // },
-    // {
-    //   name: "Reservaciones",
-    //   icon: <CategoryIcon />,
-    //   link: "/reports/reservations",
-    // },
     {
       name: "Usuarios",
       icon: <UsersIcon className="h-5 w-5" />,
@@ -61,40 +43,47 @@ export const Sidebar = () => {
     },
   ];
 
-  const sidebar = document.querySelector("aside");
-  const maxSidebar = document.querySelector(".max");
-  const miniSidebar = document.querySelector(".mini");
-  const maxToolbar = document.querySelector(".max-toolbar");
-  const logo = document.querySelector(".logo");
-  const content = document.querySelector(".content");
+  // const sidebar = document.querySelector("aside");
+  // const maxSidebar = document.querySelector(".max");
+  // const miniSidebar = document.querySelector(".mini");
+  // const maxToolbar = document.querySelector(".max-toolbar");
+  // const logo = document.querySelector(".logo");
+  // const content = document.querySelector(".content");
+
+  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const maxSidebarRef = React.useRef<HTMLDivElement>(null);
+  const miniSidebarRef = React.useRef<HTMLDivElement>(null);
+  const maxToolbarRef = React.useRef<HTMLDivElement>(null);
+  const logoRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   function openNav() {
     if (open) {
       // max sidebar
-      sidebar?.classList.remove("-translate-x-48");
-      sidebar?.classList.add("translate-x-none");
-      maxSidebar?.classList.remove("hidden");
-      maxSidebar?.classList.add("flex");
-      miniSidebar?.classList.remove("flex");
-      miniSidebar?.classList.add("hidden");
-      maxToolbar?.classList.add("translate-x-0");
-      maxToolbar?.classList.remove("translate-x-24", "scale-x-0");
-      logo?.classList.remove("ml-12");
-      content?.classList.remove("ml-12");
-      content?.classList.add("ml-12", "md:ml-60");
+      sidebarRef.current?.classList.remove("-translate-x-48");
+      sidebarRef.current?.classList.add("translate-x-none");
+      maxSidebarRef.current?.classList.remove("hidden");
+      maxSidebarRef.current?.classList.add("flex");
+      miniSidebarRef.current?.classList.remove("flex");
+      miniSidebarRef.current?.classList.add("hidden");
+      // maxToolbar?.classList.add("translate-x-0");
+      // maxToolbar?.classList.remove("translate-x-24", "scale-x-0");
+      // logo?.classList.remove("ml-12");
+      // content?.classList.remove("ml-12");
+      // content?.classList.add("ml-12", "md:ml-60");
     } else {
       // mini sidebar
-      sidebar?.classList.add("-translate-x-48");
-      sidebar?.classList.remove("translate-x-none");
-      maxSidebar?.classList.add("hidden");
-      maxSidebar?.classList.remove("flex");
-      miniSidebar?.classList.add("flex");
-      miniSidebar?.classList.remove("hidden");
-      maxToolbar?.classList.add("translate-x-24", "scale-x-0");
-      maxToolbar?.classList.remove("translate-x-0");
-      logo?.classList.add("ml-12");
-      content?.classList.remove("ml-12", "md:ml-60");
-      content?.classList.add("ml-12");
+      sidebarRef.current?.classList.add("-translate-x-48");
+      sidebarRef.current?.classList.remove("translate-x-none");
+      maxSidebarRef.current?.classList.add("hidden");
+      maxSidebarRef.current?.classList.remove("flex");
+      miniSidebarRef.current?.classList.add("flex");
+      miniSidebarRef.current?.classList.remove("hidden");
+      // maxToolbar?.classList.add("translate-x-24", "scale-x-0");
+      // maxToolbar?.classList.remove("translate-x-0");
+      // logo?.classList.add("ml-12");
+      // content?.classList.remove("ml-12", "md:ml-60");
+      // content?.classList.add("ml-12");
     }
     setOpen((prev) => !prev);
   }
@@ -147,7 +136,10 @@ export const Sidebar = () => {
           </div>
         </div>
       </nav>
-      <aside className="fixed z-50 hidden h-screen w-60 -translate-x-48 transform bg-[#68E1FD] transition duration-1000 ease-in-out md:flex">
+      <aside
+        ref={sidebarRef}
+        className="fixed z-50 hidden h-screen w-60 -translate-x-48 transform bg-[#68E1FD] transition duration-1000 ease-in-out md:flex"
+      >
         <button
           onClick={openNav}
           className="absolute right-0 top-4 flex w-full transform items-center justify-between bg-[#C7E21C] p-4 pl-4 text-black transition duration-500 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
@@ -155,7 +147,10 @@ export const Sidebar = () => {
           Neetwork
           <MenuIcon className="h-6 w-6" />
         </button>
-        <div className="max mt-20 hidden h-screen w-full flex-col space-y-2 text-white">
+        <div
+          ref={maxSidebarRef}
+          className="max mt-20 hidden h-screen w-full flex-col space-y-2 text-white"
+        >
           {/* text and logo */}
           {menuItems.map((item, index) => {
             if (item.permissions && session?.user?.role) {
@@ -174,7 +169,10 @@ export const Sidebar = () => {
           })}
         </div>
         {/* only logos */}
-        <div className="mini mt-20 flex h-full w-full flex-col ">
+        <div
+          ref={miniSidebarRef}
+          className="mini mt-20 flex h-full w-full flex-col "
+        >
           {menuItems.map((item, index) => {
             if (item.permissions && session?.user?.role) {
               if (!item.permissions.includes(session?.user?.role)) return null;

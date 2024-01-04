@@ -110,4 +110,29 @@ export const userRouter = createTRPCRouter({
       });
       return user;
     }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().optional(),
+        email: z.string().optional(),
+        role: z.string().optional(),
+        profession: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          email: input.email,
+          role: input.role,
+          profession: input.profession,
+        },
+      });
+      return user;
+    }),
 });

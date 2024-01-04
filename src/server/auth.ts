@@ -22,11 +22,13 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       role: string;
+      profession: string;
     };
   }
 
   interface User {
     role: string;
+    profession: string;
   }
 }
 
@@ -43,6 +45,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
         role: user.role,
+        profession: user.profession,
       },
     }),
   },
@@ -65,6 +68,7 @@ export const authOptions: NextAuthOptions = {
           email: profile.email,
           image: profile.picture,
           role: profile.role ?? "user",
+          profession: profile.profession ?? "",
         };
       },
       clientId: env.GOOGLE_CLIENT_ID,

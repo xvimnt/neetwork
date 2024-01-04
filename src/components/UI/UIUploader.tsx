@@ -10,6 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { UILoader } from "./UILoader";
 import { uploadFile } from "~/utils/functions";
+import Image from "next/image";
 
 export default function UIUploader({
   file,
@@ -93,6 +94,8 @@ export default function UIUploader({
   const saveDisabled = useMemo(() => {
     return !data.image || saving;
   }, [data.image, saving]);
+
+  const isImage = accept === "image/*";
 
   return (
     <form className="grid gap-6">
@@ -182,13 +185,22 @@ export default function UIUploader({
             </p>
             <span className="sr-only">Photo upload</span>
           </div>
-          {data.image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+          {isImage && data.image && (
+            <Image
               src={data.image}
-              alt="Preview"
-              className="h-full w-full rounded-md object-cover"
+              alt="uploaded"
+              className="absolute z-[1] h-full w-full rounded-md object-cover"
             />
+          )}
+          {!isImage && data.image && (
+            <video
+              autoPlay
+              loop
+              controls
+              className="absolute z-[1] h-full w-full rounded-md object-cover"
+            >
+              <source src={data.image} />
+            </video>
           )}
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">

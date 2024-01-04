@@ -7,8 +7,10 @@ import { type Section, type Course, type Lesson } from "@prisma/client";
 import { confirmAlert } from "react-confirm-alert";
 import { ConfirmDialog } from "./ConfirmDialog";
 import toast from "react-hot-toast";
+import { PlusIcon } from "../UI/Icons";
 
 interface PropsI {
+  handleAddCourse: () => void;
   handleEditCourse: (course: Course) => void;
   handleAddSection: (course: Course) => void;
   handleEditSection: (section: Section) => void;
@@ -17,6 +19,7 @@ interface PropsI {
 }
 
 export const SectionCourseContainer = ({
+  handleAddCourse,
   handleEditCourse,
   handleAddSection,
   handleEditSection,
@@ -43,6 +46,20 @@ export const SectionCourseContainer = ({
     });
   const { mutate: deleteSection, isLoading: isDeletingSection } =
     api.section.delete.useMutation({
+      onSuccess: () => {
+        ctx.course.readInfinite.invalidate().catch((err) => {
+          console.error(err);
+        });
+      },
+      onError: (err) => {
+        const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+        toast.error(
+          errorMessage ?? "Something went wrong. Please try again later.",
+        );
+      },
+    });
+  const { mutate: deleteLesson, isLoading: isDeletingLesson } =
+    api.lesson.delete.useMutation({
       onSuccess: () => {
         ctx.course.readInfinite.invalidate().catch((err) => {
           console.error(err);
@@ -112,7 +129,7 @@ export const SectionCourseContainer = ({
             title="Estas seguro?"
             onClose={onClose}
             onConfirm={() => {
-              deleteSection({
+              deleteLesson({
                 id: lesson.id,
               });
             }}
@@ -140,7 +157,8 @@ export const SectionCourseContainer = ({
       },
     );
   const hasData = data && data.pages.length > 0;
-  if (isLoading || isDeleting) return <UILoadingPage />;
+  if (isLoading || isDeleting || isDeletingSection || isDeletingLesson)
+    return <UILoadingPage />;
 
   return !hasData ? (
     <div className="flex flex-col items-center justify-center gap-4">
@@ -149,31 +167,48 @@ export const SectionCourseContainer = ({
       </span>
     </div>
   ) : (
-    data.pages.map((course) => (
-      <>
-        {course.courses.map((course, index) => (
-          <SectionCourse
-            handleAddSection={() => handleAddSection(course)}
-            handleDelete={() => handleDeleteCourse(course)}
-            handleEdit={() => handleEditCourse(course)}
-            key={course.title}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            items={course.sections.map((section) => ({
-              title: section.title,
-              handleEdit: () => handleEditSection(section),
-              handleDelete: () => handleDeleteSection(section),
-              handleAdd: () => handleAddLesson(section),
+    <div className="flex flex-col gap-8 py-4">
+      <div className="flex flex-row justify-between">
+        <h2 className="text-[30px] font-bold not-italic leading-[normal] text-black">
+          Tus cursos
+        </h2>
+        {/* add course */}
+        <button
+          onClick={handleAddCourse}
+          className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e] "
+        >
+          <span className="font-semibold not-italic leading-[normal] text-black">
+            Agregar Curso
+          </span>
+          <PlusIcon className="h-[24px] w-[24px] fill-[#000000]" />
+        </button>
+      </div>
+      {data.pages.map((course) => (
+        <>
+          {course.courses.map((course, index) => (
+            <SectionCourse
+              key={course.title}
+              handleAddSection={() => handleAddSection(course)}
+              handleDelete={() => handleDeleteCourse(course)}
+              handleEdit={() => handleEditCourse(course)}
               // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-              items: section.lessons.map((lesson) => ({
-                title: lesson.title,
-                handleEdit: () => handleEditLesson(lesson),
-                handleDelete: () => handleDeleteLesson(lesson),
-              })),
-            }))}
-            title={`${index + 1}. ${course.title}`}
-          />
-        ))}
-      </>
-    ))
+              items={course.sections.map((section) => ({
+                title: section.title,
+                handleEdit: () => handleEditSection(section as Section),
+                handleDelete: () => handleDeleteSection(section as Section),
+                handleAdd: () => handleAddLesson(section as Section),
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                items: section.lessons.map((lesson) => ({
+                  title: lesson.title,
+                  handleEdit: () => handleEditLesson(lesson as Lesson),
+                  handleDelete: () => handleDeleteLesson(lesson as Lesson),
+                })),
+              }))}
+              title={`${index + 1}. ${course.title}`}
+            />
+          ))}
+        </>
+      ))}
+    </div>
   );
 };

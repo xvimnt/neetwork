@@ -48,13 +48,20 @@ export const courseRouter = createTRPCRouter({
         take: limit + 1, // get an extra item at the end which we'll use as next cursor
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
-          createdAt: "desc",
+          position: "asc",
         },
         include: {
           user: true,
           sections: {
             include: {
-              lessons: true,
+              lessons: {
+                orderBy: {
+                  position: "asc",
+                },
+              },
+            },
+            orderBy: {
+              position: "asc",
             },
           },
           assignations: true,

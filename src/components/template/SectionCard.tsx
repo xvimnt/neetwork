@@ -28,7 +28,7 @@ export const SectionCard = ({
       <div className="flex flex-col">
         {/* header */}
         <div className="flex flex-row justify-between">
-          <h2 className="ml-2 h-[36.6px] w-[233.312px] shrink-0 text-[20px] font-normal not-italic leading-[normal] text-black">
+          <h2 className="ml-2 h-[36.6px] max-w-[90%] shrink-0 text-[20px] font-normal not-italic leading-[normal] text-black">
             {title}
           </h2>
           <div className="flex flex-row gap-2">

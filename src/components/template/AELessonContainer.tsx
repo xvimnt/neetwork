@@ -3,7 +3,7 @@ import UIModal from "../UI/UIModal";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
-import { UILoadingPage } from "../UI/UILoader";
+import { UILoader } from "../UI/UILoader";
 import { type Lesson } from "@prisma/client";
 import { AELesson } from "./AELesson";
 import { uploadFile } from "~/utils/functions";
@@ -24,6 +24,7 @@ export const AELessonContainer = ({
   const formRef = useRef<HTMLFormElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
 
   // use the `useMutation` hook to create a mutation
   const ctx = api.useUtils();
@@ -83,7 +84,9 @@ export const AELessonContainer = ({
         toast.error("El video es requerido");
         return;
       }
+      setLoading(true);
       const videoUrl = await uploadFile(file);
+      setLoading(false);
 
       // Update lesson
       if (selectedLesson) {
@@ -92,6 +95,7 @@ export const AELessonContainer = ({
           id: selectedLesson.id,
           videoUrl,
         });
+        setFile(null);
         setShowModal(false);
         return;
       }
@@ -107,12 +111,13 @@ export const AELessonContainer = ({
         videoUrl,
         sectionId,
       });
+      setFile(null);
       setShowModal(false);
       return;
     }
   };
 
-  if (isLoading || isUpdating) return <UILoadingPage />;
+  if (isLoading || isUpdating || loading) return <UILoader />;
   return (
     <UIModal
       title={selectedLesson ? "Editar leccion" : "Agregar leccion"}

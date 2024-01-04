@@ -2,7 +2,6 @@ import React, { useState, type RefObject } from "react";
 import { FormLabelLayout } from "../forms/FormLabelLayout";
 import { FormInput } from "../forms/FormInput";
 import UIUploader from "../UI/UIUploader";
-import Image from "next/image";
 import { CircleIcon, XIcon } from "../UI/Icons";
 
 interface PropsI {

@@ -43,6 +43,7 @@ export const SectionCourse = ({
 
   return (
     <>
+      <hr className="w-full border-gray-200" />
       {/* title and button */}
       <div className="flex flex-row justify-between">
         <div className="flex flex-row items-center gap-4">
