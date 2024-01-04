@@ -1,31 +1,33 @@
 import React, { useRef, useState } from "react";
-import { AECourse } from "./AECourse";
 import UIModal from "../UI/UIModal";
-import { api } from "~/utils/api";
-import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { uploadFile } from "~/utils/functions";
+import toast from "react-hot-toast";
+import { api } from "~/utils/api";
 import { UILoadingPage } from "../UI/UILoader";
-import { type Course } from "@prisma/client";
+import { type Lesson } from "@prisma/client";
+import { AELesson } from "./AELesson";
+import { uploadFile } from "~/utils/functions";
 
 interface PropsI {
   showModal: boolean;
   setShowModal: (show: boolean) => void;
-  selectedCourse?: Course;
+  sectionId?: string;
+  selectedLesson?: Lesson;
 }
 
-export const AECourseContainer = ({
+export const AELessonContainer = ({
   showModal,
   setShowModal,
-  selectedCourse,
+  sectionId,
+  selectedLesson,
 }: PropsI) => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const AECourseFormRef = useRef<HTMLFormElement>(null);
   const { data: session } = useSession();
 
   // use the `useMutation` hook to create a mutation
   const ctx = api.useUtils();
-  const { mutate, isLoading: isCreating } = api.course.create.useMutation({
+  const { mutate, isLoading } = api.lesson.create.useMutation({
     onSuccess: () => {
       ctx.course.readInfinite.invalidate().catch((err) => {
         console.error(err);
@@ -39,7 +41,7 @@ export const AECourseContainer = ({
     },
   });
   const { mutate: update, isLoading: isUpdating } =
-    api.course.update.useMutation({
+    api.lesson.update.useMutation({
       onSuccess: () => {
         ctx.course.readInfinite.invalidate().catch((err) => {
           console.error(err);
@@ -53,9 +55,9 @@ export const AECourseContainer = ({
       },
     });
 
-  const handleAECourseSave = async () => {
-    if (AECourseFormRef.current) {
-      const formData = new FormData(AECourseFormRef.current);
+  const handleAESectionSave = async () => {
+    if (formRef.current) {
+      const formData = new FormData(formRef.current);
 
       // validations
       if (!session) {
@@ -66,75 +68,64 @@ export const AECourseContainer = ({
         toast.error("El titulo es requerido");
         return;
       }
-      if (!formData.get("description")) {
-        toast.error("La descripcion es requerida");
-        return;
-      }
-      if (!formData.get("skills")) {
-        toast.error("Las habilidades son requeridas");
-        return;
-      }
 
       // If we not update the image on edit
-      if (selectedCourse && !file) {
+      if (selectedLesson && !file) {
         update({
-          id: selectedCourse.id,
+          id: selectedLesson.id,
           title: formData.get("title") as string,
-          description: formData.get("description") as string,
-          skills: formData.get("skills") as string,
         });
         setShowModal(false);
         return;
       }
 
       if (!file) {
-        toast.error("La imagen es requerida");
+        toast.error("El video es requerido");
         return;
       }
-      const courseImageUrl = await uploadFile(file);
+      const videoUrl = await uploadFile(file);
 
-      // Update
-      if (selectedCourse) {
+      // Update lesson
+      if (selectedLesson) {
         update({
-          id: selectedCourse.id,
           title: formData.get("title") as string,
-          description: formData.get("description") as string,
-          skills: formData.get("skills") as string,
-          imageUrl: courseImageUrl,
+          id: selectedLesson.id,
+          videoUrl,
         });
         setShowModal(false);
         return;
       }
 
-      // Create
+      if (!sectionId) {
+        toast.error("La seccion es requerida");
+        return;
+      }
+
+      // Create new lesson
       mutate({
         title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        skills: formData.get("skills") as string,
-        imageUrl: courseImageUrl,
-        userId: session.user.id,
+        videoUrl,
+        sectionId,
       });
       setShowModal(false);
+      return;
     }
   };
 
-  if (isCreating || isUpdating) return <UILoadingPage />;
-
+  if (isLoading || isUpdating) return <UILoadingPage />;
   return (
     <UIModal
-      title={selectedCourse ? "Editar curso" : "Agregar curso"}
+      title={selectedLesson ? "Editar leccion" : "Agregar leccion"}
       setShowModal={setShowModal}
       showModal={showModal}
-      onSave={handleAECourseSave}
+      onSave={handleAESectionSave}
     >
-      <AECourse
-        AECourseFormRef={AECourseFormRef}
+      <AELesson
+        formRef={formRef}
+        defaultTitle={selectedLesson?.title}
+        defaultVideo={selectedLesson?.videoUrl}
         file={file}
         setFile={setFile}
-        defaultTitle={selectedCourse?.title}
-        defaultDescription={selectedCourse?.description}
-        defaultSkills={selectedCourse?.skills.join(",")}
-        defaultImage={selectedCourse?.imageUrl}
       />
     </UIModal>
   );

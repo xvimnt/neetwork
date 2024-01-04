@@ -3,48 +3,77 @@ import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { PlusIcon } from "~/components/UI/Icons";
 import { useState } from "react";
 import { AECourseContainer } from "~/components/template/AECourseContainer";
-import { AECourseSectionContainer } from "~/components/template/AECourseSectionContainer";
+import { AESectionContainer } from "~/components/template/AESectionContainer";
 
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { type Course } from "@prisma/client";
 import { SectionCourseContainer } from "~/components/template/SectionCourseContainer";
+import { type Lesson, type Course, type Section } from "@prisma/client";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
+import { AELessonContainer } from "~/components/template/AELessonContainer";
 
 export default function Course() {
-  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [showAECourseModal, setShowAECourseModal] = useState(false);
   const [showAddSectionModal, setShowAddSectionModal] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<Course | undefined>();
+  const [showAddLessonModal, setShowAddLessonModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<Course>();
+  const [selectedSection, setSelectedSection] = useState<Section>();
+  const [selectedLesson, setSelectedLesson] = useState<Lesson>();
 
   // Course CRUD
-  const handleAddCourse = () => {
+  const handleAECourse = () => {
     setSelectedCourse(undefined);
-    setShowAddCourseModal(true);
+    setShowAECourseModal(true);
   };
 
   const handleEditCourse = (course: Course) => {
     setSelectedCourse(course);
-    setShowAddCourseModal(true);
+    setShowAECourseModal(true);
   };
 
   // Section CRUD
   const handleAddSection = (course: Course) => {
     setSelectedCourse(course);
+    setSelectedSection(undefined);
     setShowAddSectionModal(true);
+  };
+
+  const handleEditSection = (section: Section) => {
+    setSelectedSection(section);
+    setShowAddSectionModal(true);
+  };
+
+  // Lesson CRUD
+  const handleAddLesson = (section: Section) => {
+    setSelectedSection(section);
+    setSelectedLesson(undefined);
+    setShowAddLessonModal(true);
+  };
+
+  const handleEditLesson = (lesson: Lesson) => {
+    setSelectedSection(undefined);
+    setSelectedLesson(lesson);
+    setShowAddLessonModal(true);
   };
 
   return (
     <LayoutSigned>
       <AECourseContainer
-        setShowAddCourseModal={setShowAddCourseModal}
-        showAddCourseModal={showAddCourseModal}
+        setShowModal={setShowAECourseModal}
+        showModal={showAECourseModal}
         selectedCourse={selectedCourse}
       />
-      {selectedCourse && (
-        <AECourseSectionContainer
-          courseId={selectedCourse.id}
-          setShowAddSectionModal={setShowAddSectionModal}
-          showAddSectionModal={showAddSectionModal}
-        />
-      )}
+      <AESectionContainer
+        courseId={selectedCourse?.id}
+        selectedSection={selectedSection}
+        setShowModal={setShowAddSectionModal}
+        showModal={showAddSectionModal}
+      />
+      <AELessonContainer
+        sectionId={selectedSection?.id}
+        selectedLesson={selectedLesson}
+        showModal={showAddLessonModal}
+        setShowModal={setShowAddLessonModal}
+      />
       <div className="flex flex-col gap-8">
         {/* user cards */}
         <div className="flex flex-row">
@@ -71,7 +100,7 @@ export default function Course() {
             </div>
             {/* add course */}
             <button
-              onClick={handleAddCourse}
+              onClick={handleAECourse}
               className="inline-flex items-center justify-center gap-[19px] rounded-[50px] border border-[#c7e21c] bg-[#c7e21c] px-8 py-2.5 hover:bg-[#eeff7e] "
             >
               <span className="font-semibold not-italic leading-[normal] text-black">
@@ -101,9 +130,24 @@ export default function Course() {
           <SectionCourseContainer
             handleEditCourse={handleEditCourse}
             handleAddSection={handleAddSection}
+            handleEditSection={handleEditSection}
+            handleAddLesson={handleAddLesson}
+            handleEditLesson={handleEditLesson}
           />
         </div>
       </div>
     </LayoutSigned>
   );
 }
+
+// Fetch data before the page loads
+export const getStaticProps = () => {
+  const helpers = generateSSGHelper();
+
+  return {
+    props: {
+      // very important - use `trpcState` as the key
+      trpcState: helpers.dehydrate(),
+    },
+  };
+};

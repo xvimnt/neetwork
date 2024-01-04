@@ -2,19 +2,22 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
-export const sectionRouter = createTRPCRouter({
+export const lessonRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
         title: z.string(),
-        courseId: z.string(),
+        sectionId: z.string(),
+        videoUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.section.create({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+      return await ctx.db.lesson.create({
         data: {
           title: input.title,
-          courseId: input.courseId,
+          sectionId: input.sectionId,
+          videoUrl: input.videoUrl,
         },
       });
     }),
@@ -24,42 +27,33 @@ export const sectionRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).nullish(),
         cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
-        userId: z.string().optional(),
+        sectionId: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 50;
       const { cursor } = input;
       let where = {};
-      if (input.userId) {
+      if (input.sectionId) {
         where = {
-          userId: input.userId,
+          sectionId: input.sectionId,
         };
       }
-      const courses = await ctx.db.course.findMany({
+      const lessons = await ctx.db.lesson.findMany({
         take: limit + 1, // get an extra item at the end which we'll use as next cursor
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
           createdAt: "desc",
         },
-        include: {
-          user: true,
-          sections: {
-            include: {
-              lessons: true,
-            },
-          },
-          assignations: true,
-        },
         where,
       });
       let nextCursor: typeof cursor | undefined = undefined;
-      if (courses.length > limit) {
-        const nextItem = courses.pop();
+      if (lessons.length > limit) {
+        const nextItem = lessons.pop();
         nextCursor = nextItem!.id;
       }
       return {
-        courses,
+        lessons,
         nextCursor,
       };
     }),
@@ -71,7 +65,7 @@ export const sectionRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.section.delete({
+      return await ctx.db.lesson.delete({
         where: {
           id: input.id,
         },
@@ -83,15 +77,17 @@ export const sectionRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         title: z.string(),
+        videoUrl: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.section.update({
+      return await ctx.db.lesson.update({
         where: {
           id: input.id,
         },
         data: {
           title: input.title,
+          videoUrl: input.videoUrl,
         },
       });
     }),

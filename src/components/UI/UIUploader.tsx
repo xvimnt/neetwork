@@ -15,10 +15,12 @@ export default function UIUploader({
   file,
   setFile,
   hasUploadButton = true,
+  accept = "image/*",
 }: {
   file: File | null;
   setFile: (file: File | null) => void;
   hasUploadButton?: boolean;
+  accept?: string;
 }) {
   const [data, setData] = useState<{
     image: string | null;
@@ -194,7 +196,7 @@ export default function UIUploader({
             ref={inputRef}
             name="image"
             type="file"
-            accept="image/*"
+            accept={accept}
             className="sr-only"
             onChange={onChangePicture}
           />

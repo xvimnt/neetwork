@@ -44,8 +44,8 @@ model Lesson {
     position    Int @default(autoincrement())
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
-    Section  Section   @relation(fields: [SectionId], references: [id], onDelete: Cascade)
-    SectionId    String
+    Section  Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+    sectionId    String
 }
 
 model Assignation {

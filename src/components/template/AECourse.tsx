@@ -7,7 +7,7 @@ import Image from "next/image";
 import { CircleIcon, XIcon } from "../UI/Icons";
 
 interface PropsI {
-  addCourseFormRef: RefObject<HTMLFormElement>;
+  AECourseFormRef: RefObject<HTMLFormElement>;
   file: File | null;
   setFile: (file: File | null) => void;
   defaultTitle?: string;
@@ -16,8 +16,8 @@ interface PropsI {
   defaultImage?: string;
 }
 
-export const AddCourse = ({
-  addCourseFormRef,
+export const AECourse = ({
+  AECourseFormRef,
   file,
   setFile,
   defaultTitle,
@@ -27,7 +27,7 @@ export const AddCourse = ({
 }: PropsI) => {
   const [changeFile, setChangeFile] = useState(defaultImage ? false : true);
   return (
-    <form ref={addCourseFormRef}>
+    <form ref={AECourseFormRef}>
       <FormLabelLayout label="Nombre">
         <FormInput
           placeholder="Nombre del curso"
