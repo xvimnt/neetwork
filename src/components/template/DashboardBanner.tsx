@@ -11,8 +11,8 @@ interface PropsI {
   authorImageUrl: string;
   authorName: string;
   authorTitle: string;
-  handleNext?: () => void;
-  handlePrev?: () => void;
+  handleNext: () => void;
+  handlePrevious: () => void;
 }
 
 export const DashboardBanner = ({
@@ -24,7 +24,7 @@ export const DashboardBanner = ({
   authorName,
   authorTitle,
   handleNext,
-  handlePrev,
+  handlePrevious,
 }: PropsI) => {
   return (
     <div className="relative">
@@ -34,7 +34,7 @@ export const DashboardBanner = ({
       <div className="absolute left-0 top-10 flex w-full flex-row items-center">
         <BannerArrowIcon
           className="mr-4 h-12 w-12 cursor-pointer stroke-white hover:stroke-primary-500"
-          onClick={handlePrev}
+          onClick={handlePrevious}
         />
         <Link
           href={`/course/${id}`}

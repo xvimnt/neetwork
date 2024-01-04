@@ -3,7 +3,7 @@ import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { type RouterOutputs, api } from "~/utils/api";
 import { UILoadingPage } from "~/components/UI/UILoader";
-import { type InferGetStaticPropsI } from "next";
+import { type InferGetStaticPropsType } from "next";
 import UIModal from "~/components/UI/UIModal";
 import {
   CancelIcon,
@@ -117,7 +117,7 @@ const getRows = (
   return rows;
 };
 
-type PageProps = InferGetStaticPropsI<typeof getStaticProps>;
+type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Users(_props: PageProps) {
   // State for the page
   const [showModal, setShowModal] = React.useState(false);
@@ -130,7 +130,7 @@ export default function Users(_props: PageProps) {
   const textModal = useRef<JSX.Element>(<></>);
 
   // use the `useMutation` hook to create a mutation
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { mutate, isLoading: isClosing } = api.user.updateRole.useMutation({
     onSuccess: () => {
       ctx.user.getInfinite.invalidate().catch((err) => {

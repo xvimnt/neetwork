@@ -33,6 +33,7 @@ export const courseRouter = createTRPCRouter({
         limit: z.number().min(1).max(100).nullish(),
         cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
         userId: z.string().optional(),
+        mostRecent: z.boolean().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -42,6 +43,14 @@ export const courseRouter = createTRPCRouter({
       if (input.userId) {
         where = {
           userId: input.userId,
+        };
+      }
+      if (input.mostRecent) {
+        where = {
+          ...where,
+          createdAt: {
+            gt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
+          },
         };
       }
       const courses = await ctx.db.course.findMany({
@@ -68,6 +77,9 @@ export const courseRouter = createTRPCRouter({
         },
         where,
       });
+
+      const coursesCount = await ctx.db.course.count({ where });
+
       let nextCursor: typeof cursor | undefined = undefined;
       if (courses.length > limit) {
         const nextItem = courses.pop();
@@ -76,6 +88,7 @@ export const courseRouter = createTRPCRouter({
       return {
         courses,
         nextCursor,
+        pagesCount: Math.ceil(coursesCount / limit),
       };
     }),
 

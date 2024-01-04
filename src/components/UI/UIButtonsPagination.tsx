@@ -1,5 +1,4 @@
 import React from "react";
-import { LeftArrowIcon, RightArrowIcon } from "./Icons";
 import { UIButton } from "./UIButton";
 
 export const UIButtonsPagination = ({

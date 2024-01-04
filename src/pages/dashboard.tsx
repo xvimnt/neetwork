@@ -1,6 +1,9 @@
+import { type GetServerSidePropsContext } from "next";
 import { LayoutSigned } from "~/components/layouts/LayoutSigned";
 import { CourseCarrousel } from "~/components/template/CourseCarrousel";
-import { DashboardCarrousel } from "~/components/template/DashboardCarrousel";
+import { DashboardBannerContainer } from "~/components/template/DashboardBannerContainer";
+import { getServerAuthSession } from "~/server/auth";
+import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 
 const items = [
   {
@@ -52,11 +55,27 @@ const items = [
 export default function Dashboard() {
   return (
     <LayoutSigned>
-      <DashboardCarrousel items={items} />
+      <DashboardBannerContainer />
       <div className="mb-10 mt-[80px] flex flex-col items-center gap-8">
         <CourseCarrousel items={items} title="Te podria interesar:" />
         <CourseCarrousel items={items} title="Los mas baratos:" />
       </div>
     </LayoutSigned>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerAuthSession(context);
+  const helpers = generateSSGHelper();
+
+  // await helpers.course.readInfinite.prefetch({
+  //   userId: session?.user?.id,
+  // });
+
+  return {
+    props: {
+      // id: id,
+      session: session,
+    },
+  };
 }
