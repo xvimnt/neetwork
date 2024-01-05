@@ -10,10 +10,10 @@ export const ExplorerOutsideSubtitle = ({ title, time }: PropsI) => {
   return (
     <div className="flex w-full flex-row justify-between">
       <h3 className="flex flex-col">
-        <p className="text-[14px] font-light not-italic leading-[normal] text-[#525252]">
+        <p className="text-[15px] font-light not-italic leading-[normal] text-[#525252]">
           {title}
         </p>
-        <p className="text-[12px] font-extralight not-italic leading-[normal] text-[#767676]">
+        <p className="text-[13px] font-extralight not-italic leading-[normal] text-[#767676]">
           {time}
         </p>
       </h3>

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { AECourseContainer } from "~/components/template/AECourseContainer";
 import { AESectionContainer } from "~/components/template/AESectionContainer";
 
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { SectionCourseContainer } from "~/components/template/SectionCourseContainer";
 import { type Lesson, type Course, type Section } from "@prisma/client";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";

@@ -12,50 +12,89 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import { UILoadingPage } from "~/components/UI/UILoader";
 import { UIPage404 } from "~/components/UI/UIPage404";
+import { useSession } from "next-auth/react";
+import UIModal from "~/components/UI/UIModal";
+import { useRef, useState } from "react";
+import { AddAssignation } from "~/components/template/AddAsignation";
+import { confirmAlert } from "react-confirm-alert";
+import { ConfirmDialog } from "~/components/template/ConfirmDialog";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ courseId }: PageProps) {
-  const videos = [
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
+  const [showModal, setShowModal] = useState(false);
+
+  const addAssignationFormRef = useRef<HTMLFormElement>(null);
+
+  // use the `useMutation` hook to create a mutation
+  const ctx = api.useUtils();
+  const { mutate, isLoading: isCreating } = api.assignation.create.useMutation({
+    onSuccess: async () => {
+      // ctx.course.readInfinite.invalidate().catch((err) => {
+      //   console.error(err);
+      // });
+      await router.push(`${courseId}/play`);
     },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
+    onError: (err) => {
+      const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+      toast.error(
+        errorMessage ?? "Something went wrong. Please try again later.",
+      );
     },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-  ];
-  const sections = [
-    "Introduccion",
-    "Fundamentos",
-    "Instalacion",
-    "Configuracion",
-  ];
+  });
 
   const { data, isLoading } = api.course.read.useQuery({
     id: courseId,
   });
-
-  if (isLoading) return <UILoadingPage />;
+  const session = useSession();
+  const { data: assignationCount } = api.assignation.count.useQuery({
+    courseId: courseId,
+  });
+  const { data: assignation, isLoading: assignationLoading } =
+    api.assignation.read.useQuery({
+      courseId: courseId,
+      userId: session.data?.user.id ? session.data?.user.id : "",
+    });
+  const router = useRouter();
+  const handleInscription = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <ConfirmDialog
+            title="Estas seguro?"
+            onClose={onClose}
+            onConfirm={() => {
+              if (session.data?.user.id) {
+                mutate({
+                  courseId,
+                  userId: session.data?.user.id,
+                });
+              } else {
+                toast.error("No estas logueado");
+              }
+              onClose();
+            }}
+          >
+            <p className="text-md font-normal">
+              Estas a punto de inscribirte en este curso
+            </p>
+          </ConfirmDialog>
+        );
+      },
+    });
+  };
+  if (isLoading || assignationLoading) return <UILoadingPage />;
   if (!data) return <UIPage404 />;
   return (
     <LayoutSigned>
+      <UIModal
+        setShowModal={setShowModal}
+        showModal={showModal}
+        title="Inscribirse"
+      >
+        <AddAssignation formRef={addAssignationFormRef} />
+      </UIModal>
       <div className="flex w-full flex-col gap-16">
         {/* banner */}
         <div className="flex w-full flex-row">
@@ -93,16 +132,25 @@ export default function Course({ courseId }: PageProps) {
             <div className="flex flex-row gap-2">
               <GraduationIcon className="fill-[#C7E21C]" />
               <p className="leading-[normal]; text-[13px] font-normal not-italic text-[#383838]">
-                20 Inscritos
+                {assignationCount ? assignationCount : 0} Inscritos
               </p>
             </div>
             {/* cta */}
-            <Link
-              href={`${2}/play`}
-              className="flex h-10 w-[157px] shrink-0 items-center justify-center rounded-[5px] bg-[#c7e21c] font-semibold hover:bg-[#becf4f]"
-            >
-              Empezar
-            </Link>
+            {assignation ? (
+              <Link
+                href={`${courseId}/play`}
+                className="flex h-10 w-[157px] shrink-0 items-center justify-center rounded-[5px] bg-[#c7e21c] font-semibold hover:bg-[#becf4f]"
+              >
+                Empezar
+              </Link>
+            ) : (
+              <button
+                onClick={handleInscription}
+                className="flex h-10 w-[157px] shrink-0 items-center justify-center rounded-[5px] bg-[#c7e21c] font-semibold hover:bg-[#becf4f]"
+              >
+                Inscribirse
+              </button>
+            )}
           </div>
         </div>
         {/* body */}
@@ -187,9 +235,9 @@ export const getStaticProps = (ctx: GetServerSidePropsContext) => {
 
   if (!slug) throw new Error("No slug provided");
 
-  //   helpers.lot.getLotById.prefetch({ id: lotId }).catch((err) => {
-  //     console.error(err);
-  //   });
+  helpers.course.read.prefetch({ id: slug }).catch((err) => {
+    console.error(err);
+  });
 
   return {
     props: {

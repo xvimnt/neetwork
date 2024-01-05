@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import Head from "next/head";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
