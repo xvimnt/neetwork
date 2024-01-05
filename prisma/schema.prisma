@@ -43,6 +43,7 @@ model Lesson {
     title       String
     videoUrl    String
     position    Int @default(autoincrement())
+    duration    Int
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
     Section  Section   @relation(fields: [sectionId], references: [id], onDelete: Cascade)

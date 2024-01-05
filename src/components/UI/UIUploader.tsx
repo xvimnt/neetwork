@@ -6,6 +6,7 @@ import {
   useMemo,
   type ChangeEvent,
   useRef,
+  type RefObject,
 } from "react";
 import toast from "react-hot-toast";
 import { UILoader } from "./UILoader";
@@ -17,11 +18,13 @@ export default function UIUploader({
   setFile,
   hasUploadButton = true,
   accept = "image/*",
+  videoRef,
 }: {
   file: File | null;
   setFile: (file: File | null) => void;
   hasUploadButton?: boolean;
   accept?: string;
+  videoRef?: RefObject<HTMLVideoElement>;
 }) {
   const [data, setData] = useState<{
     image: string | null;
@@ -186,17 +189,16 @@ export default function UIUploader({
             <span className="sr-only">Photo upload</span>
           </div>
           {isImage && data.image && (
-            <Image
-              src={data.image}
-              alt="uploaded"
-              className="absolute z-[1] h-full w-full rounded-md object-cover"
-            />
+            <div className="relative h-full w-full">
+              <Image src={data.image} alt="uploaded" fill objectFit="cover" />
+            </div>
           )}
           {!isImage && data.image && (
             <video
               autoPlay
               loop
               controls
+              ref={videoRef}
               className="absolute z-[1] h-full w-full rounded-md object-cover"
             >
               <source src={data.image} />

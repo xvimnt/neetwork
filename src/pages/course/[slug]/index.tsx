@@ -70,12 +70,24 @@ export default function Course({ courseId }: PageProps) {
           {/* course info */}
           <div className="flex w-full flex-col items-end justify-center gap-4">
             {/* title */}
-            <h1 className=" text-3xl font-bold not-italic leading-[normal] text-black">
+            <h1 className=" text-end text-3xl font-bold not-italic leading-[normal] text-black">
               {data.title}
             </h1>
             {/* info */}
             <h2 className="text-[15px] font-semibold not-italic leading-[normal] text-[#383838]">
-              2h 20 min - Desde el 20 de Junio del 2023
+              {new Date(
+                data.sections.reduce((total, section) => {
+                  return (
+                    total +
+                    section.lessons.reduce((sum, lesson) => {
+                      return (sum + lesson.duration) as number;
+                    }, 0)
+                  );
+                }, 0) * 1000,
+              )
+                .toISOString()
+                .substr(11, 5) + " min"}{" "}
+              - Desde el {data.createdAt.toLocaleDateString()}
             </h2>
             {/* number of students */}
             <div className="flex flex-row gap-2">
@@ -146,14 +158,17 @@ export default function Course({ courseId }: PageProps) {
             </div>
           </div>
           {/* explorer */}
-          <div className="flex h-[525px] w-[333px] shrink-0 flex-col gap-4 overflow-y-scroll border border-solid border-[#BABABA] p-4">
+          <div className="flex h-[525px] w-[333px] shrink-0 flex-col gap-6 overflow-y-scroll border border-solid border-[#BABABA] p-4">
             {data.sections.map((section) => (
               <ExplorerOutsideContainer
                 key={section.title}
                 title={section.title}
                 videos={section.lessons.map((lesson) => ({
                   title: lesson.title,
-                  time: lesson.duration,
+                  time:
+                    new Date(lesson.duration * 1000)
+                      .toISOString()
+                      .substr(11, 5) + " min",
                 }))}
               />
             ))}

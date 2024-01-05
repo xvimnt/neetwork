@@ -9,6 +9,7 @@ export const lessonRouter = createTRPCRouter({
         title: z.string(),
         sectionId: z.string(),
         videoUrl: z.string(),
+        duration: z.number().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -18,6 +19,7 @@ export const lessonRouter = createTRPCRouter({
           title: input.title,
           sectionId: input.sectionId,
           videoUrl: input.videoUrl,
+          duration: input.duration,
         },
       });
     }),
@@ -78,6 +80,7 @@ export const lessonRouter = createTRPCRouter({
         id: z.string(),
         title: z.string(),
         videoUrl: z.string().optional(),
+        duration: z.number().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -88,6 +91,7 @@ export const lessonRouter = createTRPCRouter({
         data: {
           title: input.title,
           videoUrl: input.videoUrl,
+          duration: input.duration,
         },
       });
     }),

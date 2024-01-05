@@ -34,7 +34,7 @@ export const CourseCarrousel = ({ items, title }: PropsI) => {
         {items.map((item) => (
           <CourseCard
             id={item.id}
-            key={item.title}
+            key={item.id}
             imageUrl={item.imageUrl}
             title={item.title}
             authorName={item.authorName}

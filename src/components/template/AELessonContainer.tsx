@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UIModal from "../UI/UIModal";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
@@ -25,6 +25,8 @@ export const AELessonContainer = ({
   const [file, setFile] = useState<File | null>(null);
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [duration, setDuration] = useState<number | null>(null);
 
   // use the `useMutation` hook to create a mutation
   const ctx = api.useUtils();
@@ -84,6 +86,14 @@ export const AELessonContainer = ({
         toast.error("El video es requerido");
         return;
       }
+
+      if (!duration) {
+        toast.error(
+          "Ocurrio un error al leer la duracion del video, recarge la pagina e intente de nuevo",
+        );
+        return;
+      }
+
       setLoading(true);
       const videoUrl = await uploadFile(file);
       setLoading(false);
@@ -94,6 +104,7 @@ export const AELessonContainer = ({
           title: formData.get("title") as string,
           id: selectedLesson.id,
           videoUrl,
+          duration,
         });
         setFile(null);
         setShowModal(false);
@@ -110,12 +121,52 @@ export const AELessonContainer = ({
         title: formData.get("title") as string,
         videoUrl,
         sectionId,
+        duration,
       });
       setFile(null);
       setShowModal(false);
       return;
     }
   };
+
+  // Saving video duration
+  useEffect(() => {
+    if (file) {
+      const videoElement = videoRef.current;
+
+      if (videoElement) {
+        // Reset the video element to ensure accurate duration retrieval
+        videoElement.pause(); // Pause the video
+        videoElement.load(); // Clear previous source and reset the video
+
+        // Set the new source
+        videoElement.src = URL.createObjectURL(file);
+
+        const handleMetadataLoad = () => {
+          // Access the duration in milliseconds
+          const durationInMilliseconds = Math.floor(
+            videoElement.duration * 1000 || 0,
+          );
+          setDuration(durationInMilliseconds);
+          // console.log(
+          //   "Video Duration:",
+          //   durationInMilliseconds,
+          //   "milliseconds",
+          // );
+        };
+
+        videoElement.addEventListener("loadedmetadata", handleMetadataLoad);
+
+        // Cleanup event listener on component unmount
+        return () => {
+          videoElement.removeEventListener(
+            "loadedmetadata",
+            handleMetadataLoad,
+          );
+        };
+      }
+    }
+  }, [file]);
 
   if (isLoading || isUpdating || loading) return <UILoader />;
   return (
@@ -131,6 +182,7 @@ export const AELessonContainer = ({
         defaultVideo={selectedLesson?.videoUrl}
         file={file}
         setFile={setFile}
+        videoRef={videoRef}
       />
     </UIModal>
   );

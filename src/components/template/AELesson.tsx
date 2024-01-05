@@ -1,4 +1,4 @@
-import React, { useState, type RefObject } from "react";
+import React, { useState, type RefObject, useRef } from "react";
 import { FormLabelLayout } from "../forms/FormLabelLayout";
 import { FormInput } from "../forms/FormInput";
 import UIUploader from "../UI/UIUploader";
@@ -12,6 +12,7 @@ interface PropsI {
   defaultDescription?: string;
   defaultSkills?: string;
   defaultVideo?: string;
+  videoRef?: RefObject<HTMLVideoElement>;
 }
 
 export const AELesson = ({
@@ -20,6 +21,7 @@ export const AELesson = ({
   setFile,
   defaultTitle,
   defaultVideo,
+  videoRef,
 }: PropsI) => {
   const [changeFile, setChangeFile] = useState(defaultVideo ? false : true);
   return (
@@ -54,6 +56,7 @@ export const AELesson = ({
             setFile={setFile}
             hasUploadButton={false}
             accept="video/*"
+            videoRef={videoRef}
           />
         )}
       </FormLabelLayout>
