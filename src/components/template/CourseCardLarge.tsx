@@ -5,19 +5,19 @@ import { HamburguerCourseIcon } from "../UI/Icons";
 import Link from "next/link";
 
 interface PropsI {
-  id: string;
+  courseId: string;
   title: string;
   authorName: string;
-  remainingTime: string;
+  progress: number;
   date: string;
   imageUrl: string;
 }
 
 export const CourseCardLarge = ({
-  id,
+  courseId,
   title,
   authorName,
-  remainingTime,
+  progress,
   date,
   imageUrl,
 }: PropsI) => {
@@ -25,7 +25,7 @@ export const CourseCardLarge = ({
     <div className="relative">
       <div className="relative flex flex-row gap-4">
         <Link
-          href={`course/${id}`}
+          href={`course/${courseId}`}
           className="relative h-[147px] w-[222px] shrink-0"
         >
           <Image
@@ -50,10 +50,14 @@ export const CourseCardLarge = ({
               </p>
             </div>
             <div className="relative mt-16 flex flex-row items-center gap-2">
-              <div className="h-[6px] w-[324px] shrink-0 bg-gray-200"></div>
-              <div className="absolute left-0 top-1.5 h-[6px] w-[300px] shrink-0 bg-[#C7E21C]"></div>
+              <div className="h-[6px] w-full shrink-0 bg-gray-200"></div>
+              <div
+                className={`absolute left-0 top-1.5 h-[6px] w-[${
+                  (1 - progress + 0.2) * 100
+                }%] shrink-0 bg-[#C7E21C]`}
+              ></div>
               <p className="text-sm font-normal not-italic leading-[normal] text-[#565555]">
-                {remainingTime} restantes
+                {progress} restantes
               </p>
             </div>
           </div>

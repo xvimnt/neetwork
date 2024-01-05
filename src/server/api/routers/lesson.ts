@@ -9,7 +9,7 @@ export const lessonRouter = createTRPCRouter({
         title: z.string(),
         sectionId: z.string(),
         videoUrl: z.string(),
-        duration: z.number().optional(),
+        duration: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

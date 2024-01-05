@@ -36,6 +36,48 @@ export const assignationRouter = createTRPCRouter({
       });
     }),
 
+  readInfinite: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        cursor: z.string().nullish(), // <-- "cursor" needs to exist, but can be any type
+        userId: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 50;
+      const { cursor } = input;
+      let where = {};
+      if (input.userId) {
+        where = {
+          userId: input.userId,
+        };
+      }
+      const assignations = await ctx.db.assignation.findMany({
+        take: limit + 1, // get an extra item at the end which we'll use as next cursor
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          course: true,
+          user: true,
+        },
+        where,
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (assignations.length > limit) {
+        const nextItem = assignations.pop();
+        nextCursor = nextItem!.id;
+      }
+      const count = await ctx.db.assignation.count({ where });
+      return {
+        assignations,
+        nextCursor,
+        pagesCount: Math.ceil(count / limit),
+      };
+    }),
+
   update: protectedProcedure
     .input(
       z.object({
