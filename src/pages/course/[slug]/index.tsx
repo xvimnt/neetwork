@@ -9,6 +9,9 @@ import WhiteGradient from "~/assets/svg/white-gradient.svg";
 import { GraduationIcon } from "~/components/UI/Icons";
 import { ExplorerOutsideContainer } from "~/components/template/ExplorerOutsideContainer";
 import Link from "next/link";
+import { api } from "~/utils/api";
+import { UILoadingPage } from "~/components/UI/UILoader";
+import { UIPage404 } from "~/components/UI/UIPage404";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ courseId }: PageProps) {
@@ -44,21 +47,23 @@ export default function Course({ courseId }: PageProps) {
     "Instalacion",
     "Configuracion",
   ];
+
+  const { data, isLoading } = api.course.read.useQuery({
+    id: courseId,
+  });
+
+  if (isLoading) return <UILoadingPage />;
+  if (!data) return <UIPage404 />;
   return (
     <LayoutSigned>
       <div className="flex w-full flex-col gap-16">
         {/* banner */}
         <div className="flex w-full flex-row">
           {/* image */}
-          <div className="relative h-60 w-[700px] shrink-0">
-            <Image
-              src="https://images.unsplash.com/photo-1503428593586-e225b39bddfe?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="curso"
-              fill
-              objectFit="cover"
-            />
+          <div className="relative h-60 w-[70%] shrink-0">
+            <Image src={data.imageUrl} alt="curso" fill objectFit="cover" />
 
-            <div className="absoulte left-0 right-0 top-0 h-60 w-[700px] shrink-0">
+            <div className="absoulte left-0 right-0 top-0 h-60 w-[70%] shrink-0">
               <Image src={WhiteGradient} alt="curso" fill objectFit="cover" />
             </div>
           </div>
@@ -66,7 +71,7 @@ export default function Course({ courseId }: PageProps) {
           <div className="flex w-full flex-col items-end justify-center gap-4">
             {/* title */}
             <h1 className=" text-3xl font-bold not-italic leading-[normal] text-black">
-              Curso de WooComerce
+              {data.title}
             </h1>
             {/* info */}
             <h2 className="text-[15px] font-semibold not-italic leading-[normal] text-[#383838]">
@@ -97,11 +102,7 @@ export default function Course({ courseId }: PageProps) {
                 Descripcion del curso
               </h2>
               <article className="w-[601px] text-left text-[17px] font-light not-italic leading-[normal] text-[#383838]">
-                Lorem ipsum dolor sit amet consectetur. Nunc justo ligula
-                eleifend lacus pulvinar amet dictum tempor malesuada. Odio netus
-                et ut at et sit libero pretium fames. Pellentesque facilisi
-                consequat consequat imperdiet sed et ultricies dolor nulla.
-                Feugiat duis aenean est viverra sapien gravida in.
+                {data.description}
               </article>
             </div>
             <div className="flex flex-col gap-2">
@@ -111,9 +112,7 @@ export default function Course({ courseId }: PageProps) {
               <div className="flex flex-row gap-2">
                 <div className="relative h-10 w-10 shrink-0 rounded-[40px]">
                   <Image
-                    src={
-                      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
-                    }
+                    src={data.user.image ? data.user.image : "/user.png"}
                     fill
                     objectFit="cover"
                     alt="user"
@@ -122,10 +121,10 @@ export default function Course({ courseId }: PageProps) {
                 </div>
                 <div className="flex flex-col">
                   <p className="text-left text-[17px] font-normal not-italic leading-[normal] text-[#383838]">
-                    Juan Posadas
+                    {data.user.name}
                   </p>
                   <p className="text-left text-sm font-light not-italic leading-[normal] text-[#666]">
-                    Ingeniero de software
+                    {data.user.profession}
                   </p>
                 </div>
               </div>
@@ -135,25 +134,27 @@ export default function Course({ courseId }: PageProps) {
                 Habilidades Nuevas
               </h2>
               <div className="flex flex-row gap-2">
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
-                  Emprendimiento
-                </div>
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
-                  E-commerce
-                </div>
-                <div className="flex items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[10px] font-normal not-italic leading-[normal] text-[#525252]">
-                  Ventas
-                </div>
+                {data.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="flex  items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[12px] font-normal not-italic leading-[normal] text-[#525252]"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
           {/* explorer */}
           <div className="flex h-[525px] w-[333px] shrink-0 flex-col gap-4 overflow-y-scroll border border-solid border-[#BABABA] p-4">
-            {sections.map((section) => (
+            {data.sections.map((section) => (
               <ExplorerOutsideContainer
-                key={section}
-                title={section}
-                videos={videos}
+                key={section.title}
+                title={section.title}
+                videos={section.lessons.map((lesson) => ({
+                  title: lesson.title,
+                  time: lesson.duration,
+                }))}
               />
             ))}
           </div>
@@ -171,8 +172,6 @@ export const getStaticProps = (ctx: GetServerSidePropsContext) => {
 
   if (!slug) throw new Error("No slug provided");
 
-  const courseId = parseInt(slug);
-
   //   helpers.lot.getLotById.prefetch({ id: lotId }).catch((err) => {
   //     console.error(err);
   //   });
@@ -181,7 +180,7 @@ export const getStaticProps = (ctx: GetServerSidePropsContext) => {
     props: {
       // very important - use `trpcState` as the key
       trpcState: helpers.dehydrate(),
-      courseId,
+      courseId: slug,
     },
   };
 };

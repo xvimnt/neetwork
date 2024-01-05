@@ -92,6 +92,38 @@ export const courseRouter = createTRPCRouter({
       };
     }),
 
+  read: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const course = await ctx.db.course.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          user: true,
+          sections: {
+            include: {
+              lessons: {
+                orderBy: {
+                  position: "asc",
+                },
+              },
+            },
+            orderBy: {
+              position: "asc",
+            },
+          },
+          assignations: true,
+        },
+      });
+
+      return course;
+    }),
+
   delete: protectedProcedure
     .input(
       z.object({
