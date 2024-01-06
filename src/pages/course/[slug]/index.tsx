@@ -79,6 +79,14 @@ export default function Course({ courseId }: PageProps) {
     });
   };
 
+  const isCompletedThisLesson = (id: string) => {
+    return (
+      assignation?.completedLessons.findIndex(
+        (completedLesson) => completedLesson.lessonId === id,
+      ) !== -1
+    );
+  };
+
   if (isLoading || assignationLoading || isCreating) return <UILoadingPage />;
   if (!data) return <UIPage404 />;
   return (
@@ -133,12 +141,13 @@ export default function Course({ courseId }: PageProps) {
               <ExplorerOutsideContainer
                 key={section.title}
                 title={section.title}
-                videos={section.lessons.map((lesson) => ({
+                lessons={section.lessons.map((lesson) => ({
                   title: lesson.title,
                   time:
                     new Date(lesson.duration * 1000)
                       .toISOString()
                       .substr(11, 5) + " min",
+                  isCompleted: isCompletedThisLesson(lesson.id),
                 }))}
               />
             ))}

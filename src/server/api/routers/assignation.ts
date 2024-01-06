@@ -33,6 +33,9 @@ export const assignationRouter = createTRPCRouter({
           userId: input.userId,
           courseId: input.courseId,
         },
+        include: {
+          completedLessons: true,
+        },
       });
     }),
 
@@ -123,6 +126,33 @@ export const assignationRouter = createTRPCRouter({
       return await ctx.db.assignation.count({
         where: {
           courseId: input.courseId,
+        },
+      });
+    }),
+
+  completeLesson: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        lessonId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const completedLesson = await ctx.db.completedLesson.findFirst({
+        where: {
+          assignationId: input.id,
+          lessonId: input.lessonId,
+        },
+      });
+      if (completedLesson) {
+        return completedLesson;
+      }
+
+      // else create the completed lesson
+      return await ctx.db.completedLesson.create({
+        data: {
+          assignationId: input.id,
+          lessonId: input.lessonId,
         },
       });
     }),

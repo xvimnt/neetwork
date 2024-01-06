@@ -10,7 +10,7 @@ import { ExplorerInsideContainer } from "~/components/template/ExplorerInsideCon
 import { UILoadingPage } from "~/components/UI/UILoader";
 import { UIPage404 } from "~/components/UI/UIPage404";
 import { api } from "~/utils/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { e } from "@vercel/blob/dist/put-96a1f07e";
 import toast from "react-hot-toast";
@@ -20,7 +20,21 @@ export default function Course({ courseId }: PageProps) {
   const [currentVideo, setCurrentVideo] = useState("");
 
   const session = useSession();
-
+  const ctx = api.useUtils();
+  const { mutate: complete, isLoading: isCompleting } =
+    api.assignation.completeLesson.useMutation({
+      onSuccess: () => {
+        ctx.assignation.read.invalidate().catch((err) => {
+          console.error(err);
+        });
+      },
+      onError: (err) => {
+        const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+        toast.error(
+          errorMessage ?? "Something went wrong. Please try again later.",
+        );
+      },
+    });
   const { mutate: update, isLoading: isUpdating } =
     api.assignation.update.useMutation({
       onSuccess: () => {
@@ -73,7 +87,7 @@ export default function Course({ courseId }: PageProps) {
     });
   };
 
-  const goNextLesson = () => {
+  const handleFinish = () => {
     const currentLessonId = assignation?.currentLessonId;
     if (!currentLessonId) {
       toast.error("No hay leccion actual");
@@ -96,6 +110,10 @@ export default function Course({ courseId }: PageProps) {
 
     if (currentLessonIndex === lessons.length - 1) {
       toast.success("Termino todas las lecciones");
+      complete({
+        id: assignation?.id ?? "",
+        lessonId: currentLessonId,
+      });
       return;
     }
 
@@ -105,10 +123,24 @@ export default function Course({ courseId }: PageProps) {
       return;
     }
 
+    // complete current lesson and go next lesson
+    complete({
+      id: assignation?.id ?? "",
+      lessonId: currentLessonId,
+    });
     handleClickLesson(nextLesson.id);
   };
 
-  if (isLoading || assignationLoading || isUpdating) return <UILoadingPage />;
+  const isCompletedThisLesson = (id: string) => {
+    return (
+      assignation?.completedLessons.findIndex(
+        (completedLesson) => completedLesson.lessonId === id,
+      ) !== -1
+    );
+  };
+
+  if (isLoading || assignationLoading || isUpdating || isCompleting)
+    return <UILoadingPage />;
   if (!data) return <UIPage404 />;
 
   return (
@@ -131,7 +163,7 @@ export default function Course({ courseId }: PageProps) {
                 autoPlay
                 playsInline
                 controls
-                onEnded={goNextLesson}
+                onEnded={handleFinish}
                 className="h-full w-full"
                 key={currentVideo}
               >
@@ -197,6 +229,7 @@ export default function Course({ courseId }: PageProps) {
                       .toISOString()
                       .substr(11, 5) + " min",
                   id: lesson.id,
+                  isCompleted: isCompletedThisLesson(lesson.id),
                 }))}
               />
             ))}

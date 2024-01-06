@@ -2,15 +2,16 @@ import React from "react";
 import { ExplorerOutsideTitle } from "./ExplorerOutsideTitle";
 import { ExplorerOutsideSubtitle } from "./ExplorerOutsideSubtitle";
 
-interface VideoI {
+interface LessonI {
   title: string;
   time: string;
   id: string;
+  isCompleted?: boolean;
 }
 
 interface PropsI {
   title: string;
-  lessons: VideoI[];
+  lessons: LessonI[];
   handleClickLesson: (id: string) => void;
 }
 
@@ -33,6 +34,7 @@ export const ExplorerInsideContainer = ({
             key={lesson.title}
             title={lesson.title}
             time={lesson.time}
+            isCompleted={lesson.isCompleted}
             onClick={() => handleClickLesson(lesson.id)}
           />
         ))}

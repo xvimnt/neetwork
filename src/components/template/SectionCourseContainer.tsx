@@ -29,7 +29,7 @@ export const SectionCourseContainer = ({
   const session = useSession();
 
   // use the `useMutation` hook to create a mutation
-  const ctx = api.useContext();
+  const ctx = api.useUtils();
   const { mutate: deleteCourse, isLoading: isDeleting } =
     api.course.delete.useMutation({
       onSuccess: () => {

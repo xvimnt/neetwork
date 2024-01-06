@@ -1,13 +1,19 @@
 import React from "react";
-import { ExplorerArrowIcon } from "../UI/Icons";
+import { CheckIcon, ExplorerArrowIcon } from "../UI/Icons";
 
 interface PropsI {
   title: string;
   time: string;
   onClick: () => void;
+  isCompleted?: boolean;
 }
 
-export const ExplorerOutsideSubtitle = ({ title, time, onClick }: PropsI) => {
+export const ExplorerOutsideSubtitle = ({
+  title,
+  time,
+  onClick,
+  isCompleted,
+}: PropsI) => {
   return (
     <div className="flex w-full flex-row justify-between">
       <h3 className="flex flex-col">
@@ -19,7 +25,11 @@ export const ExplorerOutsideSubtitle = ({ title, time, onClick }: PropsI) => {
         </p>
       </h3>
       <button onClick={onClick}>
-        <ExplorerArrowIcon className="h-[16px] w-[16px] rotate-[270deg] fill-[#767676] hover:fill-[#c7e21c]" />
+        {isCompleted ? (
+          <CheckIcon className="h-[16px] w-[16px] fill-[#c7e21c] stroke-[#c7e21c]" />
+        ) : (
+          <ExplorerArrowIcon className="h-[16px] w-[16px] rotate-[270deg] fill-[#767676] hover:fill-[#c7e21c]" />
+        )}
       </button>
     </div>
   );

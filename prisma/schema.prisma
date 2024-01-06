@@ -61,8 +61,17 @@ model Assignation {
     course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
     courseId    String
     currentLessonId    String @default("")
+    completedLessons completedLesson[]
 }
 
+model completedLesson {
+    id          String   @id @default(cuid())
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    lessonId    String
+    assignation Assignation @relation(fields: [assignationId], references: [id], onDelete: Cascade)
+    assignationId String
+}
 
 // Necessary for Next auth
 model Account {
