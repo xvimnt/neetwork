@@ -78,6 +78,7 @@ export default function Course({ courseId }: PageProps) {
       },
     });
   };
+
   if (isLoading || assignationLoading || isCreating) return <UILoadingPage />;
   if (!data) return <UIPage404 />;
   return (
@@ -104,7 +105,7 @@ export default function Course({ courseId }: PageProps) {
                 return (
                   total +
                   section.lessons.reduce((sum, lesson) => {
-                    return (sum + lesson.duration) as number;
+                    return sum + lesson.duration;
                   }, 0)
                 );
               }, 0) * 1000,

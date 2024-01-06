@@ -83,7 +83,7 @@ export const assignationRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         completed: z.boolean().optional(),
-        progress: z.number().optional(),
+        currentLessonId: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -94,7 +94,7 @@ export const assignationRouter = createTRPCRouter({
         data: {
           id: input.id,
           completed: input.completed,
-          progress: input.progress,
+          currentLessonId: input.currentLessonId,
         },
       });
     }),

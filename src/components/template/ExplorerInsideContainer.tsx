@@ -5,14 +5,20 @@ import { ExplorerOutsideSubtitle } from "./ExplorerOutsideSubtitle";
 interface VideoI {
   title: string;
   time: string;
+  id: string;
 }
 
 interface PropsI {
   title: string;
-  videos: VideoI[];
+  lessons: VideoI[];
+  handleClickLesson: (id: string) => void;
 }
 
-export const ExplorerInsideContainer = ({ title, videos }: PropsI) => {
+export const ExplorerInsideContainer = ({
+  title,
+  lessons,
+  handleClickLesson,
+}: PropsI) => {
   const [expanded, setExpanded] = React.useState(false);
   return (
     <div className="flex flex-col gap-6">
@@ -22,11 +28,12 @@ export const ExplorerInsideContainer = ({ title, videos }: PropsI) => {
         handleClick={() => setExpanded((prev) => !prev)}
       />
       <div className={`flex-col gap-4 ${expanded ? "flex" : "hidden"}`}>
-        {videos.map((video) => (
+        {lessons.map((lesson) => (
           <ExplorerOutsideSubtitle
-            key={video.title}
-            title={video.title}
-            time={video.time}
+            key={lesson.title}
+            title={lesson.title}
+            time={lesson.time}
+            onClick={() => handleClickLesson(lesson.id)}
           />
         ))}
       </div>

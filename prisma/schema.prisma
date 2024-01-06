@@ -60,6 +60,7 @@ model Assignation {
     userId      String
     course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
     courseId    String
+    currentLessonId    String @default("")
 }
 
 

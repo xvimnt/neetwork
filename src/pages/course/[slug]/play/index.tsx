@@ -10,50 +10,105 @@ import { ExplorerInsideContainer } from "~/components/template/ExplorerInsideCon
 import { UILoadingPage } from "~/components/UI/UILoader";
 import { UIPage404 } from "~/components/UI/UIPage404";
 import { api } from "~/utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { e } from "@vercel/blob/dist/put-96a1f07e";
+import toast from "react-hot-toast";
 
 type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Course({ courseId }: PageProps) {
   const [currentVideo, setCurrentVideo] = useState("");
 
-  const videos = [
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-    {
-      title: "Bienvenida al curso",
-      time: "3min 20s",
-    },
-  ];
-  const sections = [
-    "Introduccion",
-    "Fundamentos",
-    "Instalacion",
-    "Configuracion",
-  ];
+  const session = useSession();
+
+  const { mutate: update, isLoading: isUpdating } =
+    api.assignation.update.useMutation({
+      onSuccess: () => {
+        // ctx.course.readInfinite.invalidate().catch((err) => {
+        //   console.error(err);
+        // });
+      },
+      onError: (err) => {
+        const errorMessage = err?.data?.zodError?.fieldErrors?.content?.[0];
+        toast.error(
+          errorMessage ?? "Something went wrong. Please try again later.",
+        );
+      },
+    });
+
+  const { data: assignation, isLoading: assignationLoading } =
+    api.assignation.read.useQuery({
+      courseId: courseId,
+      userId: session.data?.user.id ? session.data?.user.id : "",
+    });
 
   const { data, isLoading } = api.course.read.useQuery({
     id: courseId,
   });
 
-  if (isLoading) return <UILoadingPage />;
+  useEffect(() => {
+    if (assignation && data) {
+      const currentLessonId = assignation.currentLessonId;
+      if (currentLessonId) {
+        setCurrentVideo(
+          data.sections[0]?.lessons.find(
+            (lesson) => lesson.id === currentLessonId,
+          )?.videoUrl ?? "",
+        );
+      } else {
+        setCurrentVideo(data.sections[0]?.lessons[0]?.videoUrl ?? "");
+      }
+    }
+  }, [assignation, data]);
+
+  const handleClickLesson = (id: string) => {
+    const video = data?.sections
+      .map((section) => section.lessons)
+      .flat()
+      .find((lesson) => lesson.id === id)?.videoUrl;
+    if (video) setCurrentVideo(video);
+    update({
+      id: assignation?.id ?? "",
+      currentLessonId: id,
+    });
+  };
+
+  const goNextLesson = () => {
+    const currentLessonId = assignation?.currentLessonId;
+    if (!currentLessonId) {
+      toast.error("No hay leccion actual");
+      return;
+    }
+
+    const lessons = data?.sections.map((section) => section.lessons).flat();
+    if (!lessons) {
+      toast.error("No hay lecciones");
+      return;
+    }
+
+    const currentLessonIndex = lessons.findIndex(
+      (lesson) => lesson.id === currentLessonId,
+    );
+    if (currentLessonIndex === undefined) {
+      toast.error("No se encuentra la leccion actual");
+      return;
+    }
+
+    if (currentLessonIndex === lessons.length - 1) {
+      toast.success("Termino todas las lecciones");
+      return;
+    }
+
+    const nextLesson = lessons[currentLessonIndex + 1];
+    if (!nextLesson) {
+      toast.error("No hay siguiente leccion");
+      return;
+    }
+
+    handleClickLesson(nextLesson.id);
+  };
+
+  if (isLoading || assignationLoading || isUpdating) return <UILoadingPage />;
   if (!data) return <UIPage404 />;
 
   return (
@@ -71,9 +126,20 @@ export default function Course({ courseId }: PageProps) {
           </div>
           {/* video body */}
           <div className="relative h-[45vw] w-full shrink-0">
-            <video autoPlay loop controls className="h-full w-full">
-              <source src={data.sections[0]?.lessons[1]?.videoUrl} />
-            </video>
+            {currentVideo ? (
+              <video
+                autoPlay
+                playsInline
+                controls
+                onEnded={goNextLesson}
+                className="h-full w-full"
+                key={currentVideo}
+              >
+                <source src={currentVideo} />
+              </video>
+            ) : (
+              <p>No video</p>
+            )}
           </div>
           {/* info */}
           <div className="mb-[60px] ml-[40px] flex flex-col gap-4">
@@ -123,7 +189,8 @@ export default function Course({ courseId }: PageProps) {
               <ExplorerInsideContainer
                 key={section.id}
                 title={section.title}
-                videos={section.lessons.map((lesson) => ({
+                handleClickLesson={handleClickLesson}
+                lessons={section.lessons.map((lesson) => ({
                   title: lesson.title,
                   time:
                     new Date(lesson.duration * 1000)
