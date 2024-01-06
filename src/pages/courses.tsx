@@ -1,10 +1,10 @@
 import { type GetServerSidePropsContext } from "next";
-import { useSession } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { UIButtonsPagination } from "~/components/UI/UIButtonsPagination";
+import { UIDebouncer } from "~/components/UI/UIDebouncer";
 import { UILoadingPage } from "~/components/UI/UILoader";
 import { LayoutSigned } from "~/components/layouts/LayoutSigned";
-import { CourseCardLarge } from "~/components/template/CourseCardLarge";
-import { SavedCoursesTabs } from "~/components/template/SavedCoursesTabs";
+import { CourseCard } from "~/components/template/CourseCard";
 import { getServerAuthSession } from "~/server/auth";
 import { generateSSGHelper } from "~/server/helpers/ssgHelper";
 import { api } from "~/utils/api";
@@ -12,16 +12,15 @@ import { api } from "~/utils/api";
 export default function Courses() {
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState(0);
-  const session = useSession();
+  const [value, setValue] = useState("");
 
   const {
-    data: assignations,
+    data: courses,
     fetchNextPage,
     isLoading,
-  } = api.assignation.readInfinite.useInfiniteQuery(
+  } = api.course.readInfinite.useInfiniteQuery(
     {
-      limit: 5,
-      userId: session?.data?.user?.id,
+      limit: 1,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -29,71 +28,41 @@ export default function Courses() {
     },
   );
 
-  // get the current page with 1 item
-  const currentPage = assignations?.pages[page];
-
-  // fetch next if there is a next page
-  const handleNext = useCallback(async () => {
-    const pagesCount = currentPage?.pagesCount;
-    if (pagesCount) {
-      await fetchNextPage();
-      if (page < pagesCount - 1) setPage((prev) => prev + 1);
-      else setPage(0);
-    }
-  }, [currentPage, fetchNextPage, page]);
-
-  // fetch previous if there is a previous page
-  const handlePrevious = () => {
-    const pagesCount = currentPage?.pagesCount;
-    if (page > 0) setPage((prev) => prev - 1);
-    else if (pagesCount) setPage(pagesCount - 1);
+  const handleNext = async () => {
+    await fetchNextPage();
+    setPage((page) => page + 1);
   };
 
-  const tabs = [
-    {
-      name: "En Progreso",
-      active: activeTab === 0,
-      handleClick: () => setActiveTab(0),
-    },
-    {
-      name: "Guardados",
-      active: activeTab === 1,
-      handleClick: () => setActiveTab(1),
-    },
-    {
-      name: "Completados",
-      active: activeTab === 2,
-      handleClick: () => setActiveTab(2),
-    },
-  ];
-
-  const currentPageAssignations = assignations?.pages[page]?.assignations;
+  const currentPage = courses?.pages[page];
 
   if (isLoading) return <UILoadingPage />;
+  if (!currentPage) return null;
 
   return (
     <LayoutSigned>
-      <div className="flex flex-col gap-8 py-10">
-        <SavedCoursesTabs tabs={tabs} />
-        {currentPageAssignations ? (
-          currentPageAssignations.map((assignation) => (
-            <CourseCardLarge
-              key={assignation.id}
-              courseId={assignation.course.id}
-              title={assignation.course.title}
-              authorName={
-                assignation.user.name ? assignation.user.name : "Anonimo"
-              }
-              progress={assignation.progress}
-              imageUrl={assignation.course.imageUrl}
-              date={assignation.createdAt.toLocaleDateString()}
-            />
-          ))
-        ) : (
-          <div className=" flex h-full w-full flex-row items-center justify-center">
-            <p className="text-4xl font-bold">No tienes cursos</p>
+      <div className="flex w-[70%] flex-col">
+        <div className="flex w-full flex-row items-center justify-center">
+          <div className="w-full lg:w-[40%]">
+            <UIDebouncer value={value} setValue={setValue} />
           </div>
-        )}
+        </div>
+        <UIButtonsPagination
+          page={page}
+          setPage={setPage}
+          totalPages={currentPage.pagesCount}
+          handleNext={handleNext}
+        />
+        <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 ">
+          {currentPage.courses.map((course) => (
+            <CourseCard
+              id={course.id}
+              key={course.id}
+              imageUrl={course.imageUrl}
+              title={course.title}
+              authorName={course.user.name ? course.user.name : "Anonimo"}
+            />
+          ))}
+        </div>
       </div>
     </LayoutSigned>
   );
@@ -103,8 +72,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerAuthSession(context);
   const helpers = generateSSGHelper();
 
-  await helpers.assignation.readInfinite.prefetch({
-    userId: session?.user?.id,
+  await helpers.course.readInfinite.prefetch({
+    limit: 9,
   });
 
   return {

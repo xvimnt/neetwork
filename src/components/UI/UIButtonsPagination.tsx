@@ -17,12 +17,12 @@ export const UIButtonsPagination = ({
       <div className="text">
         Pagina{" "}
         <span className="text font-bold">
-          {page} de {totalPages}
+          {page + 1} de {totalPages}
         </span>
       </div>
 
       <div className="mt-4 items-center gap-x-4 sm:mt-0 sm:flex">
-        {page > 1 && (
+        {page > 0 && (
           <UIButton
             type="button"
             onClick={() => setPage((prev) => prev - 1)}
@@ -31,7 +31,7 @@ export const UIButtonsPagination = ({
           />
         )}
 
-        {page < totalPages && (
+        {page + 1 < totalPages && (
           <UIButton
             type="button"
             onClick={handleNext}

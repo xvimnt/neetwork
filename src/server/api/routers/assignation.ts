@@ -65,6 +65,7 @@ export const assignationRouter = createTRPCRouter({
         include: {
           course: true,
           user: true,
+          completedLessons: true,
         },
         where,
       });
@@ -155,5 +156,43 @@ export const assignationRouter = createTRPCRouter({
           lessonId: input.lessonId,
         },
       });
+    }),
+
+  getProgress: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const assignation = await ctx.db.assignation.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          completedLessons: true,
+        },
+      });
+      const course = await ctx.db.course.findFirst({
+        where: {
+          id: assignation?.courseId,
+        },
+        include: {
+          sections: {
+            include: {
+              lessons: true,
+            },
+          },
+        },
+      });
+      if (!assignation?.completedLessons.length || !course?.sections.length)
+        return 0;
+      const progress =
+        assignation.completedLessons.length /
+        course.sections.reduce((acc, section) => {
+          return acc + section.lessons.length;
+        }, 0);
+
+      return progress;
     }),
 });

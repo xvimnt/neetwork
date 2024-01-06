@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import {
+  BookIcon,
   DashboardIcon,
   HamburguerIcon,
   HouseIcon,
@@ -21,9 +22,14 @@ export const Sidebar = () => {
       link: "/dashboard",
     },
     {
-      name: "Mis Cursos",
+      name: "Todos los cursos",
       icon: <DashboardIcon />,
       link: "/courses",
+    },
+    {
+      name: "Guardados",
+      icon: <BookIcon className="h-4 w-4" />,
+      link: "/saved",
     },
     {
       name: "Usuarios",
@@ -32,7 +38,7 @@ export const Sidebar = () => {
       permissions: ["admin"],
     },
     {
-      name: "Mis Cursos",
+      name: "Instructor",
       icon: <VideoIcon className="h-5 w-5" />,
       link: `/user`,
     },

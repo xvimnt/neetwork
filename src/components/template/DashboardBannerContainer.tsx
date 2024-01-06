@@ -47,7 +47,8 @@ export const DashboardBannerContainer = () => {
 
   // get the current course
   const currentCourse = currentPage?.courses[0];
-  if (isLoading || !currentCourse) return <UILoader />;
+  if (isLoading) return <UILoader />;
+  if (!currentCourse) return <div>no hay cursos {page}</div>;
   return (
     <>
       <DashboardBanner

@@ -3,24 +3,32 @@ import React from "react";
 import Logo from "~/assets/img/logo.png";
 import { HamburguerCourseIcon } from "../UI/Icons";
 import Link from "next/link";
+import { UILoadingPage } from "../UI/UILoader";
+import { api } from "~/utils/api";
 
 interface PropsI {
+  assignationId: string;
   courseId: string;
   title: string;
   authorName: string;
-  progress: number;
   date: string;
   imageUrl: string;
 }
 
 export const CourseCardLarge = ({
+  assignationId,
   courseId,
   title,
   authorName,
-  progress,
   date,
   imageUrl,
 }: PropsI) => {
+  const { data: progress, isLoading: assignationLoading } =
+    api.assignation.getProgress.useQuery({
+      id: assignationId,
+    });
+
+  if (assignationLoading) return <UILoadingPage />;
   return (
     <div className="relative">
       <div className="relative flex flex-row gap-4">
@@ -51,14 +59,18 @@ export const CourseCardLarge = ({
             </div>
             <div className="relative mt-16 flex flex-row items-center gap-2">
               <div className="h-[6px] w-full shrink-0 bg-gray-200"></div>
-              <div
-                className={`absolute left-0 top-1.5 h-[6px] w-[${
-                  (1 - progress + 0.2) * 100
-                }%] shrink-0 bg-[#C7E21C]`}
-              ></div>
-              <p className="text-sm font-normal not-italic leading-[normal] text-[#565555]">
-                {progress} restantes
-              </p>
+              {progress && (
+                <div
+                  className={`top-3.4 absolute left-0 h-[6px] w-[${
+                    progress * 100
+                  }%] shrink-0 bg-[#C7E21C]`}
+                ></div>
+              )}
+              {progress && (
+                <p className="text-sm font-normal not-italic leading-[normal] text-[#565555]">
+                  {progress * 100}% restantes
+                </p>
+              )}
             </div>
           </div>
         </div>
