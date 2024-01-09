@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import {
   BookIcon,
+  CategoryIcon,
   DashboardIcon,
   HamburguerIcon,
   HouseIcon,
@@ -35,6 +36,12 @@ export const Sidebar = () => {
       name: "Usuarios",
       icon: <UsersIcon className="h-5 w-5" />,
       link: "/reports/users",
+      permissions: ["admin"],
+    },
+    {
+      name: "Cursos",
+      icon: <CategoryIcon />,
+      link: "/reports/courses",
       permissions: ["admin"],
     },
     {
@@ -103,7 +110,9 @@ export const Sidebar = () => {
               <Link href="#" className="">
                 <div className="avatar">
                   <div className="w-16 rounded">
-                    <h1 className="text-3xl font-bold text-white">Neetwork </h1>
+                    <h1 className="text-3xl font-bold text-white">
+                      educatree{" "}
+                    </h1>
                   </div>
                 </div>
               </Link>
@@ -150,7 +159,7 @@ export const Sidebar = () => {
           onClick={openNav}
           className="absolute right-0 top-4 flex w-full transform items-center justify-between bg-[#C7E21C] p-4 pl-4 text-black transition duration-500 ease-in-out hover:bg-black hover:fill-[#C7E21C] hover:text-[#C7E21C]"
         >
-          Neetwork
+          educatree
           <MenuIcon className="h-6 w-6" />
         </button>
         <div

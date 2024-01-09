@@ -161,8 +161,10 @@ export default function Course({ courseId }: PageProps) {
             {currentVideo ? (
               <video
                 autoPlay
+                onContextMenu={(e) => e.preventDefault()}
                 playsInline
                 controls
+                controlsList="nodownload"
                 onEnded={handleFinish}
                 className="h-full w-full"
                 key={currentVideo}

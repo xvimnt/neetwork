@@ -9,7 +9,7 @@ export const Navbar = (props: { user: DefaultSession["user"] }) => {
   return (
     <div className="fixed z-30 hidden h-16 w-full items-center justify-center bg-white py-2 pl-[40px] pr-[30px] md:flex dark:bg-[#0F172A]">
       <div className="logo  ml-12 flex h-full flex-none transform items-center justify-center text-xl duration-500 ease-in-out dark:text-white">
-        Neetwork
+        educatree
       </div>
       <div className="flex h-full grow items-center justify-center">
         {/* <UIDebouncer

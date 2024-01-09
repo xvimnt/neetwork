@@ -25,6 +25,7 @@ model Course {
     userId      String
     sections  Section[]
     assignations Assignation[]
+    status     String @default("unavailable")
 }
 
 model Section {

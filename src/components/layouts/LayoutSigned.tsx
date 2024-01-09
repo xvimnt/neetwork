@@ -38,7 +38,7 @@ export const LayoutSigned = ({
       <div className="w-full pt-2 md:pt-16">
         <div
           className={`${
-            noPadding ? "" : "mx-auto w-full pl-[90px] pr-[40px]"
+            noPadding ? "" : "mx-auto w-full px-8 md:pl-[90px] md:pr-[40px]"
           } min-h-[90vh]`}
         >
           {children}

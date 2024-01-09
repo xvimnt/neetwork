@@ -7,7 +7,6 @@ export default function UIModal({
   title,
   text,
   onSave,
-  size = "2xl",
   children,
 }: {
   showModal: boolean;

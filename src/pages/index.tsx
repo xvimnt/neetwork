@@ -26,7 +26,7 @@ export default function Hero() {
           space-y-4 rounded-lg px-4 md:items-start lg:py-8 "
         >
           <div className="text-[40px] font-bold not-italic text-[#96C346] md:w-[510px] md:text-[62px] md:leading-[63px]">
-            Neetwork Digital Business School
+            educatree Digital Business School
           </div>
           <div className="text-sm font-bold not-italic leading-[25px] text-[#47C7F0] md:w-[510px] md:text-base">
             100% en línea | 100% práctico | En horario flexible |

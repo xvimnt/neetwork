@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { SkillPill } from "./SkillPill";
 
 interface PropsI {
   description: string;
@@ -57,8 +58,8 @@ export const CourseInfo = ({
         <div className="flex flex-row gap-2">
           {skills.map((skill) => (
             <span
-              key={skill}
               className="flex  items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[12px] font-normal not-italic leading-[normal] text-[#525252]"
+              key={skill}
             >
               {skill}
             </span>

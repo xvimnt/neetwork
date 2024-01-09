@@ -54,7 +54,7 @@ export const CourseCardLarge = ({
                 <Image src={Logo} fill objectFit="cover" alt="Logo" />
               </div>
               <p className="text-sm font-semibold not-italic leading-[normal] text-[#565555]">
-                Neetwork - Por: {authorName} - {date}
+                educatree - Por: {authorName} - {date}
               </p>
             </div>
             <div className="relative mt-16 flex flex-row items-center gap-2">
