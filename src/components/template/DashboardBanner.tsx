@@ -29,7 +29,13 @@ export const DashboardBanner = ({
   return (
     <div className="relative">
       <div className="-ml-[40px] flex h-[250px] w-[95vw] shrink-0 items-center bg-cover blur-[7.5px] brightness-50 saturate-200">
-        <Image src={imageUrl} alt="course" fill objectFit="cover" />
+        <Image
+          src={imageUrl}
+          alt="course"
+          fill
+          objectFit="cover"
+          className="selectDisable"
+        />
       </div>
       <div className="absolute left-0 top-10 flex w-full flex-row items-center">
         <BannerArrowIcon
@@ -40,7 +46,13 @@ export const DashboardBanner = ({
           href={`/course/${id}`}
           className="relative h-[162px] w-[272px] cursor-pointer transition duration-500  hover:scale-110"
         >
-          <Image src={imageUrl} alt="course" fill objectFit="cover" />
+          <Image
+            src={imageUrl}
+            alt="course"
+            fill
+            objectFit="cover"
+            className="selectDisable"
+          />
         </Link>
         <div className="ml-6 flex h-[162px] flex-col">
           <div className="flex flex-row">

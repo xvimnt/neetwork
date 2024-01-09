@@ -82,7 +82,7 @@ export default function Courses() {
             <div className="flex flex-row gap-2">
               {getSkills().map((skill) => (
                 <span
-                  className="flex cursor-pointer items-center justify-center gap-2.5 rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[12px] font-normal not-italic leading-[normal] text-[#525252]"
+                  className="flex cursor-pointer items-center justify-center gap-2.5 text-nowrap rounded-[50px] border border-[#525252] px-[9px] py-[5px] text-left text-[12px] font-normal not-italic leading-[normal] text-[#525252]"
                   key={skill}
                 >
                   {skill}

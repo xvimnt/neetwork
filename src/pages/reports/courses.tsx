@@ -5,11 +5,19 @@ import { type RouterOutputs, api } from "~/utils/api";
 import { UILoadingPage } from "~/components/UI/UILoader";
 import { type InferGetStaticPropsType } from "next";
 import UIModal from "~/components/UI/UIModal";
-import { CancelIcon, CoinsIcon, ThreeDotsIcon } from "~/components/UI/Icons";
+import {
+  CancelIcon,
+  CheckIcon,
+  CoinsIcon,
+  SearchIcon,
+  ThreeDotsIcon,
+} from "~/components/UI/Icons";
 import { UIButtonDropdown } from "~/components/UI/UIButtonDropdown";
 import Image from "next/image";
 import { LayoutTableData } from "~/components/layouts/LayoutTableData";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { GTQ } from "~/utils/functions";
 
 type courseGetInfinite = RouterOutputs["course"]["readInfinite"]["courses"];
 type Unpacked<T> = T extends (infer U)[] ? U : T;
@@ -19,7 +27,7 @@ enum Actions {
   AVAILABLE = "available",
 }
 
-const columns = ["Identificador", "Instructor", "Estado", "Acciones"];
+const columns = ["Identificador", "Instructor", "Precio", "Estado", "Acciones"];
 
 const getRows = (
   page: courseGetInfinite | undefined,
@@ -39,20 +47,20 @@ const getRows = (
       <div className="flex flex-row items-center">
         {course.imageUrl ? (
           <Image
-            className="mr-2 shrink-0 rounded-full border-2 border-white object-cover dark:border-primary-700"
+            className="mr-2 shrink-0 rounded-lg object-cover"
             src={course.imageUrl}
             alt=""
-            width={40}
+            width={60}
             height={40}
           />
         ) : (
           <></>
         )}
         <div>
-          <h2 className="font-medium text-primary-800 dark:text-white">
+          <h3 className="font-medium text-primary-800 dark:text-white">
             {course.title}
-          </h2>
-          <p className="text-sm font-normal text-primary-600 hover:text-primary-500 hover:underline dark:text-secondary-400">
+          </h3>
+          <p className="ne text-sm font-normal text-primary-600 hover:text-primary-500 dark:text-secondary-400">
             {course.createdAt.toLocaleDateString()}
           </p>
         </div>
@@ -74,9 +82,9 @@ const getRows = (
           <></>
         )}
         <div>
-          <h2 className="font-medium text-primary-800 dark:text-white">
+          <h3 className="font-medium text-primary-800 dark:text-white">
             {course.user.name}
-          </h2>
+          </h3>
           <a
             className="text-sm font-normal text-primary-600 hover:text-primary-500 hover:underline dark:text-secondary-400"
             href={`mailto:${course.user.email}`}
@@ -85,6 +93,13 @@ const getRows = (
           </a>
         </div>
       </div>,
+    );
+
+    // price
+    row.push(
+      <p className="font-medium text-primary-800 dark:text-white">
+        {GTQ.format(course.price)}
+      </p>,
     );
 
     // status
@@ -132,7 +147,7 @@ export default function Courses(_props: PageProps) {
   const [search, setSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const textModal = React.useRef<React.ReactNode | null>(null);
-
+  const router = useRouter();
   // use the `useMutation` hook to create a mutation
   const ctx = api.useUtils();
   const { mutate, isLoading: isClosing } = api.course.update.useMutation({
@@ -168,7 +183,7 @@ export default function Courses(_props: PageProps) {
         textModal.current = (
           <>
             <p className="my-4 text-lg leading-relaxed text-primary-700">
-              ¿Está seguro que desea desactivar al curso{" "}
+              ¿Está seguro que desea activar al curso{" "}
               <strong>{course?.title}</strong>
             </p>
           </>
@@ -181,7 +196,7 @@ export default function Courses(_props: PageProps) {
         textModal.current = (
           <>
             <p className="my-4 text-lg leading-relaxed text-primary-700">
-              ¿Está seguro que desea activar el curso{" "}
+              ¿Está seguro que desea desactivar el curso{" "}
               <strong>{course?.title}</strong>
             </p>
           </>
@@ -217,7 +232,7 @@ export default function Courses(_props: PageProps) {
       {
         label: (
           <span className="flex flex-row items-center justify-items-center gap-2 hover:text-primary-500">
-            <CancelIcon /> Desactivar
+            <CoinsIcon /> Precio
           </span>
         ),
         onClick: () => handleClickAction(course, Actions.UNAVAILABLE),
@@ -225,7 +240,23 @@ export default function Courses(_props: PageProps) {
       {
         label: (
           <span className="flex flex-row items-center justify-items-center gap-2 hover:text-primary-500">
-            <CoinsIcon /> Habilitar
+            <SearchIcon className="h-5 w-5" /> Ver
+          </span>
+        ),
+        onClick: () => router.push(`/course/${course.id}`),
+      },
+      {
+        label: (
+          <span className="flex flex-row items-center justify-items-center gap-2 hover:text-primary-500">
+            <CancelIcon className="h-5 w-5" /> Desactivar
+          </span>
+        ),
+        onClick: () => handleClickAction(course, Actions.UNAVAILABLE),
+      },
+      {
+        label: (
+          <span className="flex flex-row items-center justify-items-center gap-2 hover:text-primary-500">
+            <CheckIcon className="h-5 w-5" /> Habilitar
           </span>
         ),
         onClick: () => handleClickAction(course, Actions.AVAILABLE),
@@ -233,8 +264,8 @@ export default function Courses(_props: PageProps) {
     ];
 
     // Remove sell and cancel options if the reservation is not reserved
-    if (course.status === Actions.AVAILABLE) actions.splice(0, 1);
     if (course.status === Actions.AVAILABLE) actions.splice(1, 1);
+    if (course.status === Actions.UNAVAILABLE) actions.splice(2, 1);
 
     return actions;
   };

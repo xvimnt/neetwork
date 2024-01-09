@@ -326,7 +326,6 @@ export const SearchIcon = ({ ...other }: SVGProps<SVGSVGElement>) => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="mx-3 h-5 w-5"
       {...other}
     >
       <path

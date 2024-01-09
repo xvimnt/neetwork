@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { api } from "~/utils/api";
-import { UILoader } from "../UI/UILoader";
+import { UILoader, UILoadingPage } from "../UI/UILoader";
 import { DashboardBanner } from "./DashboardBanner";
 
 export const DashboardBannerContainer = () => {
@@ -47,7 +47,7 @@ export const DashboardBannerContainer = () => {
 
   // get the current course
   const currentCourse = currentPage?.courses[0];
-  if (isLoading) return <UILoader />;
+  if (isLoading) return <UILoadingPage />;
   if (!currentCourse) return <div>no hay cursos {page}</div>;
   return (
     <>
